@@ -28,7 +28,7 @@ ___
 
 Song | Album | Release Year
 --- | --- | ---
-Revelations | Piece of Mind | 1993
+Revelations | Piece of Mind | 1983
 The Alchemist | Final Frontier | 2010
 The Book of souls | The Book of Souls | 2015
 
