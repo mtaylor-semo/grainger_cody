@@ -9,4 +9,27 @@ editor_options:
 ```{r}
 library(tidyverse)
 ```
+```{r}
+#Display anscombe
+anscombe
+```
+
+```{r}
+#Wrangling the data
+ansc <-
+  bind_cols(
+    anscombe %>% 
+      select(matches("x")) %>% 
+      gather(dataset, "x"),
+    anscombe %>% 
+      select(matches("y")) %>% 
+      gather(key, "y")
+  ) %>%
+  select(-key) %>% 
+  mutate(dataset = gsub("x", "", dataset)) %>%  
+  as_tibble()
+
+ansc
+```
+
 
