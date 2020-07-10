@@ -33,6 +33,7 @@ ansc
 ```
 
 ```{r}
+#Calculations on the data
 ansc %>%
   group_by(dataset) %>%
   summarize(
@@ -44,9 +45,74 @@ ansc %>%
 ```
  
 ```{r}
+#Visualizing data. 4 plots shown
 ansc %>% ggplot(aes(x,y,color=dataset)) +
   geom_point() +
   facet_wrap(~dataset,ncol = 2)
 ```
  
+```{r}
+#preparing for tables in R markdown
+library(knitr)
+library(xtable)
+```
  
+```{r}
+head(iris)
+```
+ 
+```{r}
+#Usuing a kable from knitr package instead of a table
+#Example from the iris data
+kable(head(iris), 
+      align= c("l", "c", "r", "c", "l"),
+      col.names = c("Sepal Length", "Sepal Width", "Sepal Length", "Sepal Width", "Species"))
+```
+ 
+```{r}
+#airquality kable
+head(airquality)
+
+kable(head(airquality), 
+      align= c("r", "r", "c", "l", "l"),
+      col.names = c("Ozone (ppb)", "Solar R (lang)", "Wind (mph)", "Temp (F)", "Month","Day"))
+```
+ 
+```{r}
+#Statistical tests on chickwts data
+head(chickwts)
+
+chicks_lm <- lm(weight ~ feed, data = chickwts)
+
+summary(chicks_lm)
+
+```
+ 
+```{r}
+kable(chicks_lm)
+# When ran the code gives the message cannot coerce class'"lm"' to a data.frame.
+
+```
+ 
+```{r}
+
+xtable(chicks_lm) %>% kable()
+#xtable extracts the info that kable needs
+```
+ 
+```{r}
+#Same tests ran for trees data set
+head(trees)
+trees_lm <- lm(Girth ~ Height, data = trees)
+
+summary(trees_lm)
+
+xtable(trees_lm) %>% kable()
+
+```
+# writing the Michaelis-Menten kinetics equation with LaTeX commands
+$$ v = \frac{d[P]}{dt} = \frac{V_{max}[S]}{K_M + [S]}$$
+
+footnote test[^1]
+
+[^1]: Equation for enzymes. yay for footnotes
