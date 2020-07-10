@@ -115,4 +115,4 @@ $$ v = \frac{d[P]}{dt} = \frac{V_{max}[S]}{K_M + [S]}$$
 
 footnote test[^1]
 
-[^1]: Equation for enzymes. yay for footnotes
+[^1]: yay for footnotes
