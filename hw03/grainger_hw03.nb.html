@@ -1808,8 +1808,32 @@ ansc</code></pre>
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYW5zYyAlPiVcbiAgZ3JvdXBfYnkoZGF0YXNldCkgJT4lXG4gIHN1bW1hcml6ZShcbiAgICBtZWFuX3ggPSBtZWFuKHgpLFxuICAgIHN0ZGV2X3ggPSBzZCh4KSxcbiAgICBtZWFuX3kgPSBtZWFuKHkpLFxuICAgIHN0ZGV2X3kgPSBzZCh5KVxuICApXG5gYGAifQ== -->
+<pre class="r"><code>ansc %&gt;%
+  group_by(dataset) %&gt;%
+  summarize(
+    mean_x = mean(x),
+    stdev_x = sd(x),
+    mean_y = mean(y),
+    stdev_y = sd(y)
+  )</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiYHN1bW1hcmlzZSgpYCB1bmdyb3VwaW5nIG91dHB1dCAob3ZlcnJpZGUgd2l0aCBgLmdyb3Vwc2AgYXJndW1lbnQpXG4ifQ== -->
+<pre><code>`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibmNvbCI6NSwibnJvdyI6NH0sInJkZiI6Ikg0c0lBQUFBQUFBQUJndHlpVERtaXVCaVlHQmdabUJoWUdKZ1pnVXlHZGljQXd5TlRJMFlHRmlZZ0R4R29Bd25pSzRBcWhJR01rQnFCSUNZQlNaaENHTVl3UmpHTUlZSmtPQURxWFZRWWdBRFhEUmNIVmRIMGVTLytTYTRhTGc2T1laM0FYeFBHWkZvaUhsUVBsd2RnOE95MDlXNnVrRDZxcjFzOWlvSEJqdS9YZk11aFFEcCtaK0N2djVIOHlSclhtSnVhakhVZzZ4UVFmYVV4SkxFNHRRU0tKY3ROelV4TDc0Q0psbGNrcEphQnVkQ0pDdFJKU3ZSYk9Fc3lpL1hnOW5FQzhSTURVRGkvLy8vZjlDZGs1eVRXQXh6RGt5UUMrUWN2YlFpb0g0Zzd4K2FGdmI4Z3BMTS9EeWdKaWJreUlMSFloR2FBSDlwSHNnbEtickpHYVY1MmJxR0lBdkEwaERBQzJXeklMRlpJVll5L1VjTEo3YlV2UFRNdkZTWTIzTVNrMUp6b0J3K29JL0JIdFlyS01yTWc0VWtGMUMwV0s4a3Z5UVJwbzRyT1Q4SEpnTDJHOE0vQUxldHhaR2tBZ0FBIn0= -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["dataset"],"name":[1],"type":["chr"],"align":["left"]},{"label":["mean_x"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["stdev_x"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["mean_y"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["stdev_y"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"9","3":"3.316625","4":"7.500909","5":"2.031568"},{"1":"2","2":"9","3":"3.316625","4":"7.500909","5":"2.031657"},{"1":"3","2":"9","3":"3.316625","4":"7.500000","5":"2.030424"},{"1":"4","2":"9","3":"3.316625","4":"7.500909","5":"2.030579"}],"options":{"columns":{"min":{},"max":[10],"total":[5]},"rows":{"min":[10],"max":[10],"total":[4]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogImh3MDMiDQphdXRob3I6ICJDb2R5IEdyYWluZ2VyIg0KZGF0ZTogImByIGZvcm1hdChTeXMudGltZSgpLCAnJWQgJUIgJVknKWAiDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCmVkaXRvcl9vcHRpb25zOg0KICBjaHVua19vdXRwdXRfdHlwZTogaW5saW5lDQotLS0NCmBgYHtyfQ0KbGlicmFyeSh0aWR5dmVyc2UpDQpgYGANCmBgYHtyfQ0KI0Rpc3BsYXkgYW5zY29tYmUNCmFuc2NvbWJlDQpgYGANCg0KYGBge3J9DQojV3JhbmdsaW5nIHRoZSBkYXRhDQphbnNjIDwtDQogIGJpbmRfY29scygNCiAgICBhbnNjb21iZSAlPiUgDQogICAgICBzZWxlY3QobWF0Y2hlcygieCIpKSAlPiUgDQogICAgICBnYXRoZXIoZGF0YXNldCwgIngiKSwNCiAgICBhbnNjb21iZSAlPiUgDQogICAgICBzZWxlY3QobWF0Y2hlcygieSIpKSAlPiUgDQogICAgICBnYXRoZXIoa2V5LCAieSIpDQogICkgJT4lDQogIHNlbGVjdCgta2V5KSAlPiUgDQogIG11dGF0ZShkYXRhc2V0ID0gZ3N1YigieCIsICIiLCBkYXRhc2V0KSkgJT4lICANCiAgYXNfdGliYmxlKCkNCg0KYW5zYw0KYGBgDQoNCg0K</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogImh3MDMiDQphdXRob3I6ICJDb2R5IEdyYWluZ2VyIg0KZGF0ZTogImByIGZvcm1hdChTeXMudGltZSgpLCAnJWQgJUIgJVknKWAiDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCmVkaXRvcl9vcHRpb25zOg0KICBjaHVua19vdXRwdXRfdHlwZTogaW5saW5lDQotLS0NCmBgYHtyfQ0KbGlicmFyeSh0aWR5dmVyc2UpDQpgYGANCmBgYHtyfQ0KI0Rpc3BsYXkgYW5zY29tYmUNCmFuc2NvbWJlDQpgYGANCg0KYGBge3J9DQojV3JhbmdsaW5nIHRoZSBkYXRhDQphbnNjIDwtDQogIGJpbmRfY29scygNCiAgICBhbnNjb21iZSAlPiUgDQogICAgICBzZWxlY3QobWF0Y2hlcygieCIpKSAlPiUgDQogICAgICBnYXRoZXIoZGF0YXNldCwgIngiKSwNCiAgICBhbnNjb21iZSAlPiUgDQogICAgICBzZWxlY3QobWF0Y2hlcygieSIpKSAlPiUgDQogICAgICBnYXRoZXIoa2V5LCAieSIpDQogICkgJT4lDQogIHNlbGVjdCgta2V5KSAlPiUgDQogIG11dGF0ZShkYXRhc2V0ID0gZ3N1YigieCIsICIiLCBkYXRhc2V0KSkgJT4lICANCiAgYXNfdGliYmxlKCkNCg0KYW5zYw0KYGBgDQoNCmBgYHtyfQ0KYW5zYyAlPiUNCiAgZ3JvdXBfYnkoZGF0YXNldCkgJT4lDQogIHN1bW1hcml6ZSgNCiAgICBtZWFuX3ggPSBtZWFuKHgpLA0KICAgIHN0ZGV2X3ggPSBzZCh4KSwNCiAgICBtZWFuX3kgPSBtZWFuKHkpLA0KICAgIHN0ZGV2X3kgPSBzZCh5KQ0KICApDQpgYGANCiANCg==</div>
 
 
 
