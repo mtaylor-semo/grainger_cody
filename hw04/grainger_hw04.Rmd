@@ -190,6 +190,20 @@ When running the above code all objects with a displ value<5 are marked TRUE and
 
 ### Section 3.5: Facets
 
+Using facets to create subplots of the data 'mpg'
+facet_wrap()is not used within geom_point. the subplots will be divided by class of vehicle
+```{r}
+ggplot(data=mpg) +
+  geom_point(mapping=aes(x=displ, y=hwy))+
+  facet_wrap(~class,nrow=2)
+```
+
+Below is another facet that creates subplots based on two varibles. nrow is not needed for this and facet_grid is used instead of facet_wrap
+```{r}
+ggplot(data=mpg) +
+  geom_point(mapping=aes(x=displ, y=hwy))+
+  facet_grid(drv~cyl)
+```
 
 
 #### Section 3.5 questions
