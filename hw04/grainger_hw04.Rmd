@@ -122,19 +122,71 @@ The above code does not return blue colored dots because aes() associates an aes
 
 **2:** Which variables in `mpg` are categorical? Which variables are continuous? (*Hint:* type `?mpg` to read the documentation for the dataset). How can you see this information when you run mpg?
 
+variables manufacturer, model, displ, year, cyl, trans, drv, fl, and class categorizes the data while variables cty and hwy are continuous variables as they describe a rate that varies with the categories
 
 **3:** Map a continuous variable to color, size, and shape. How do these aesthetics behave differently for categorical vs. continuous variables? **Note:** You need several code chunks here to answer this question.
 
+using aes() to map color to categoricial and continuous variables
+```{r}
+#first the continuous is plotted. 'cty'
+ggplot(data=mpg) +
+  geom_point(mapping = aes(x=displ,y=hwy,color=cty))
+
+#the categorical variable 'model'
+ggplot(data=mpg) +
+  geom_point(mapping = aes(x=displ,y=hwy,color=model))
+```
+ Varying the aesthetic with cty.It doesnt seem to be very precise in describing the cty variable along with hwy however as it is hard for me to distinguish the shades of the object with the corresponding values but it does give a good general trend showing cars with lower displ or higher hwy values seem to have a higher cty value in general. 
+ Varying the aesthetic with model wasnt very useful as multiple models from the same manufacturer were the same color. 
+ 
+aes() to apply size aesthetic to continuous and categorical variables.
+```{r}
+#using the same variable 'cty'
+ggplot(data=mpg) +
+  geom_point(mapping = aes(x=displ,y=hwy,size=cty))
+
+#and again the categorical variable 'model'
+ggplot(data=mpg) +
+  geom_point(mapping = aes(x=displ,y=hwy,size=model))
+```
+Similarly to above using the cty variable to set the size aesthetic gives a generalization about how cty varies with hwy and displ. mapping size to model makes the plot unreadable
+
+using aes() to map size to a continuous and categorical variable
+```{r}
+#variable 'cty' again. 'cty'
+ggplot(data=mpg) +
+  geom_point(mapping = aes(x=displ,y=hwy,shape=cty))
+```
+```{r}
+#the categorical variable 'manufacturer' this time
+ggplot(data=mpg) +
+  geom_point(mapping = aes(x=displ,y=hwy,shape=manufacturer))
+```
+mapping shape to the continuous variable cty does not work. Mapping shape to manufacturer is not very useful as just looking at the plot it would be impossible to tell what the model of car is as they are all plotted with the same sybol per manufacturer and many manufacturers are not listed and there can only be a max of 6 discrete values
+
+
 
 **4:** What happens if you map the same variable to multiple aesthetics?
-
+```{r}
+ggplot(data=mpg) +
+  geom_point(mapping = aes(x=displ,y=hwy,color=model,alpha=model))
+```
+Mapping both color and alpha to model just combines the effects but in this particular example it doesnt help define which points on the plot are which specific models
 
 **5:** What does the stroke aesthetic do? What shapes does it work with? (*Hint:* use `?geom_point`)
 
-
+```{r}
+ggplot(data=mpg) +
+  geom_point(mapping = aes(x=displ,y=hwy),stroke = 1)
+```
+Stroke affects shapes with borders by changing border size
 
 **6:** What happens if you map an aesthetic to something other than a variable name, like `aes(colour = displ < 5)`?
-
+```{r}
+ggplot(data=mpg) +
+  geom_point(mapping = aes(x=displ,y=hwy,color=displ < 5))
+```
+When running the above code all objects with a displ value<5 are marked TRUE and all >= 5 are marked FALSE
 
 ### Section 3.5: Facets
 
