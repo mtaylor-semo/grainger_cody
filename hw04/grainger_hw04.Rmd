@@ -1,0 +1,236 @@
+---
+title: "HW04 Part 1: Complete Chapter 3"
+author: "Cody Grainger"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Chapter 3
+
+- Change "your name" in the YAML header above to your name.
+
+### Section 3.1
+
+Load the tidyverse packages. I've entered the first code chunk for you. **You must enter all subsequent code chunks and run the code.** 
+
+```{r}
+library("tidyverse")
+```
+
+If you get an error, then you did not install the `tidyverse` package like you were supposed to in the previous assignment. Go back to that assignment and complete that step. (This should not be the case, though.)
+
+### Section 3.2: First steps
+
+Enter your code chunks for Section 3.2 here.
+
+Get in the habit of entering a brief description of what each chunk of code does. Enter this above the chunk, like I did in Section 3.1.
+
+# 3.3.2 the 'mpg' data frame
+- Displays a data frame of the data set 'mpg'. 
+
+```{r}
+ggplot2::mpg
+```
+
+
+#### Section 3.2 Questions
+
+Answer the questions *completely.* Some answers will require you to write code in a code chunk and also to type text before or after the chunk. Other answers will require only code or only text. 
+
+**1:** Run ggplot(data = mpg). What do you see?
+```{r}
+ggplot(data = mpg)
+```
+ After running the code I am left with a blank box
+
+**2:** How many rows are in `mpg`? How many columns? **Hint:** Use the `dim()` function. Type `dim()` in the console to learn what `dim()` does.
+
+'dim()' is used to retrieve the dimensions of an object such as our data frame. For data frames it will display the number of rows and columns.
+```{r}
+dim(mpg)
+```
+There are 234 rows and 11 columns in the mpg data frame.
+
+**3:** What does the `drv` variable describe? Read the help for `?mpg` to find out.
+
+?mpg returns a list describing the drv variable as the type of drive train the vehicle has (f=front, r=rear, 4=4wd)
+
+**4:** Make a scatterplot of `hwy` vs `cyl`.
+```{r}
+ggplot(data=mpg) +
+  geom_point(mapping=aes(x=displ, y=hwy))
+```
+A scatterplot with additional code to plot 'hwy' and 'displ' from the 'mpg' data
+
+**5:** What happens if you make a scatterplot of `class` vs `drv`? Why is the plot not useful?
+```{r}
+ggplot(data=mpg) +
+  geom_point(mapping=aes(x=class, y=drv))
+```
+The scatterplot is rather unorganized and not very useful as it does not show any meaningful trend
+
+
+
+### Section 3.3: Aesthetic mappings
+
+#Examples from the text
+
+Changing the aesthetic of objects within plots.
+
+in the example below I color the points according to class
+```{r}
+ggplot(data=mpg) +
+  geom_point(mapping = aes(x=displ,y=hwy,color=class))
+```
+
+Aesthetic changes are not just limited to color. Below is the same demonstaration as above but using size instead of color
+```{r}
+ggplot(data=mpg) +
+  geom_point(mapping = aes(x=displ,y=hwy,size=class))
+```
+
+two more examples using shape and aplpha changes for objects within a plot. changes in objects are again based off of car class
+```{r}
+ggplot(data=mpg) +
+  geom_point(mapping = aes(x=displ,y=hwy,alpha=class))
+
+ggplot(data=mpg) +
+  geom_point(mapping = aes(x=displ,y=hwy,shape=class))
+```
+
+Manual setting of the aesthetic rather than using a variable
+```{r}
+ggplot(data=mpg) +
+  geom_point(mapping = aes(x=displ,y=hwy),color="blue")
+```
+
+
+#### Section 3.3 questions
+
+**1:** What’s gone wrong with this code? Why are the points not blue?
+```{r}
+ggplot(data=mpg) +
+  geom_point(mapping = aes(x=displ,y=hwy,color="blue"))
+```
+The above code does not return blue colored dots because aes() associates an aesthetic with a variable and "blue" is not a variable in the data. color="blue" must be used as part of the geometry function.
+
+**2:** Which variables in `mpg` are categorical? Which variables are continuous? (*Hint:* type `?mpg` to read the documentation for the dataset). How can you see this information when you run mpg?
+
+
+**3:** Map a continuous variable to color, size, and shape. How do these aesthetics behave differently for categorical vs. continuous variables? **Note:** You need several code chunks here to answer this question.
+
+
+**4:** What happens if you map the same variable to multiple aesthetics?
+
+
+**5:** What does the stroke aesthetic do? What shapes does it work with? (*Hint:* use `?geom_point`)
+
+
+
+**6:** What happens if you map an aesthetic to something other than a variable name, like `aes(colour = displ < 5)`?
+
+
+### Section 3.5: Facets
+
+
+
+#### Section 3.5 questions
+
+**1:** What happens if you facet on a continuous variable? **Note:** Write a prediction, then make and run your code chunk.
+
+
+
+**2:** What do the empty cells in plot with `facet_grid(drv ~ cyl)` mean? How do they relate to this plot?
+
+
+
+**3:** What plots does the following code make? What does `.` do?
+
+
+
+**4:** Take the first faceted plot below. What are the advantages to using faceting instead of the colour aesthetic? What are the disadvantages? How might the balance change if you had a larger dataset?
+
+
+
+**5:** Read `?facet_wrap`. What does `nrow` do? What does `ncol` do? What other options control the layout of the individual panels? Why doesn’t `facet_grid()` have nrow and ncol argument?
+
+
+**6:** When using `facet_grid()` you should usually put the variable with more unique levels in the columns. Why?
+
+### Section 3.6: Geometric objects
+
+
+
+#### Section 3.6.1 Questions
+
+**1:** What geom would you use to draw a line chart? A boxplot? A histogram? An area chart? **Note:** You will have to make some types of these charts in Part 2 of this assignment.
+
+
+**2:** Run this code in your head and predict what the output will look like. Then, run the code in R and check your predictions.
+
+
+
+**3:** What does `show.legend = FALSE` do? What happens if you remove it?
+**Note:** Skip the "Why do you think I used it earlier in the chapter?" question.
+
+
+**4:** What does the `se` argument to `geom_smooth()` do?
+
+
+**5:** Will these two graphs look different? Why/why not?
+
+
+**6:** Recreate the R code necessary to generate the following graphs. **Note:** Enter a separate code chunk for each graph, numbered 1 to 6, starting row-wise at upper left. 
+
+1: upper left.
+
+
+2: upper right.
+
+
+3: middle left.
+
+
+4: middle right.
+
+
+5: lower left.
+
+
+6: lower right. *Hint:* Read the help file for `geom_point`. Use `shape = 21`, `stroke = 2`, and `size = 3`.
+
+### Section 3.7: Statistical transformations.
+
+**Skip this section.** We may return to it later.
+
+
+### Section 3.8 Position adjustments
+
+
+#### Section 3.8 Questions
+
+**1:** What is the problem with this plot? How could you improve it. *Hint:* Remember the size of the `mpg` data set from earlier in this exercise. Does the number of points seem correct? **Note:** Write the code to improve it. 
+
+
+**2:** What parameters to `geom_jitter()` control the amount of jittering?
+
+
+**3:** Compare and contracts `geom_jitter()` with `geom_count()`.
+
+
+**4:** What is the default position adjustement for `geom_boxplot()`? Create a visualization of the `mpg` dataset that demonstrates it.
+
+
+### Section 3.9: Coordinate systems
+
+**Note:** Read about and do only the code chunk associated with `coord_flip()`. `coord_flip()` is a great layer to use when you have categorical data with longish names as it makes the text easier to read.
+
+### Section 3.10: The layered grammar of graphics
+
+Just read this section as a contextual review of everything you just learned.
