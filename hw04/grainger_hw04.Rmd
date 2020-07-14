@@ -419,24 +419,108 @@ ggplot()+
 
 ### Section 3.8 Position adjustments
 
+Coloring and filling a bar chart (geom_bar) using the diamonds data set
+```{r}
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, colour = cut))
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, fill = cut))
+```
+
+Mapping a fill with a variable that causes multiple colored segments within the same cut/count bars. carried out by geom_bar(position) function (automatic, no specified position results in a stack)
+```{r}
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, fill = clarity))
+```
+
+Specifying the positon to explore other ways to map variables without using automatic stacking
+```{r}
+ggplot(data = diamonds, mapping = aes(x = cut, fill = clarity)) + 
+  geom_bar(alpha = 1/5, position = "identity")
+ggplot(data = diamonds, mapping = aes(x = cut, colour = clarity)) + 
+  geom_bar(fill = NA, position = "identity")
+```
+
+setting the position to "fill" arranges the bars in a way that makes the bars more easily comparable to each other visually
+```{r}
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, fill = clarity), position = "fill")
+```
+
+Rather than stacking on top of one another the bars can be stacked next to each other by setting position to "dodge"
+```{r}
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, fill = clarity), position = "dodge")
+```
+
+Overlapping data can be hard to read however setting position to jitter creates a small amount of variation in each points position to give a better visual representation of more data points. The jitter is randomized, every time I run the chunk the jitter is re-randomized.
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy), position = "jitter")
+```
+
 
 #### Section 3.8 Questions
 
 **1:** What is the problem with this plot? How could you improve it. *Hint:* Remember the size of the `mpg` data set from earlier in this exercise. Does the number of points seem correct? **Note:** Write the code to improve it. 
 
+```{r}
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) + 
+  geom_point(position="jitter")
+```
+adding jitter helps to reveal many overlapped points. By doing this I have a better understanding of where the data is more concentrated.
 
 **2:** What parameters to `geom_jitter()` control the amount of jittering?
-
+the width and height parameters of jitter each control both the vertical and horizontal jitter 
 
 **3:** Compare and contracts `geom_jitter()` with `geom_count()`.
+```{r}
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) + 
+  geom_point()+
+  geom_jitter()
 
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) + 
+  geom_point()+
+  geom_count()
+
+```
+geom jitter gives us more information about the data by spreading overlapping points while geom count creates larger objects to describe overlapping data points
 
 **4:** What is the default position adjustement for `geom_boxplot()`? Create a visualization of the `mpg` dataset that demonstrates it.
+```{r}
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy,color=drv)) + 
+  geom_boxplot()
 
+ggplot(data = mpg, mapping = aes(x = manufacturer, y = hwy,group=manufacturer)) + 
+  geom_boxplot()
+```
+The default position is vertically aligned box plots
 
 ### Section 3.9: Coordinate systems
 
 **Note:** Read about and do only the code chunk associated with `coord_flip()`. `coord_flip()` is a great layer to use when you have categorical data with longish names as it makes the text easier to read.
+
+coord_flip flips the x and y axes. The box plots can be displayed vertically or horizontally.
+```{r}
+#Vertically arranged
+ggplot(data = mpg, mapping = aes(x = class, y = hwy)) + 
+  geom_boxplot()
+
+#Horizontally arranged
+ggplot(data = mpg, mapping = aes(x = class, y = hwy)) + 
+  geom_boxplot() +
+  coord_flip()
+
+ggplot(data = mpg, mapping = aes(x = manufacturer, y = hwy,group=manufacturer)) + 
+  geom_boxplot()+
+  coord_flip()
+
+ggplot(data = mpg, mapping = aes(x = manufacturer, y = cty,group=manufacturer)) + 
+  geom_boxplot()+
+  coord_flip()
+```
+
 
 ### Section 3.10: The layered grammar of graphics
 
