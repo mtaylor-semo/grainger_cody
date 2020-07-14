@@ -1,0 +1,49 @@
+---
+title: "hw05"
+author: "Cody Grainger"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+```{r}
+library(tidyverse)
+```
+
+
+### Plot 1
+
+Scatterplot displaying the trees dataset
+```{r}
+data(trees)
+?trees
+
+ggplot(data=trees)+
+  geom_point(mapping=aes(x=Height,y=Girth))
+```
+
+### Plot 2
+
+```{r}
+data(lynx)
+?lynx
+
+#creating a vector for years 1821-1934
+year <- c(1821:1934)
+year
+
+#inspecting the class of the lynx data set
+class(lynx)
+# the class is "time series"
+
+#converting ts to vector
+pelts <- as.vector(lynx)
+pelts
+
+lynxDF <- data.frame(year,pelts)
+lynxDF
+
+ggplot(data=lynxDF)+
+  geom_line(mapping=aes(x=year,y=pelts),color="Maroon",size=1)
+```
+
