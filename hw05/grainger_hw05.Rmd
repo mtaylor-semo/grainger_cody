@@ -40,10 +40,47 @@ class(lynx)
 pelts <- as.vector(lynx)
 pelts
 
+#creating a data frame with pelts and year
 lynxDF <- data.frame(year,pelts)
 lynxDF
 
+#plotting with ggplot. A maroon linechart
 ggplot(data=lynxDF)+
   geom_line(mapping=aes(x=year,y=pelts),color="Maroon",size=1)
 ```
+
+### Plot 3
+```{r}
+#iris data set
+data(iris)
+
+?iris
+
+#iris scatter plot with modified labels
+ggplot(data=iris)+
+  geom_point(mapping=aes(x=Petal.Length,y=Petal.Width)) +
+  labs(x="Petal Length", y = "Petal Width")
+```
+
+##### Plots 4 and 5
+Violin plots use geometric shapes with varying widths throughout to represent data density. The widest part of any one violin plot object represents the median of the data set. The wider the figure the higher the density of data points that fall within those corresponding values
+```{r}
+#msleep data set
+data(msleep)
+?msleep
+
+#Plot 4
+#A violin plot with fill set to gray30
+ggplot(data=msleep) +
+  geom_violin(mapping=aes(x=vore,y=sleep_rem),fill="gray30")
+
+#Plot 5
+#A violin plot with fill set to gray70
+ggplot(data=msleep) +
+  geom_violin(mapping=aes(x=vore,y=sleep_rem),fill="gray70")
+```
+
+
+
+
 
