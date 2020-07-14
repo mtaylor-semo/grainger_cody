@@ -210,27 +210,101 @@ ggplot(data=mpg) +
 
 **1:** What happens if you facet on a continuous variable? **Note:** Write a prediction, then make and run your code chunk.
 
+I predict the facet will create a subplot for each individual data point
+```{r}
+ggplot(data=mpg) +
+  geom_point(mapping=aes(x=displ, y=hwy))+
+  facet_wrap(~cty,nrow=2)
+```
+35 subplots were created showing data points for the vehicles on the numbered subplot that corresponds with their 'cty' value
 
 
 **2:** What do the empty cells in plot with `facet_grid(drv ~ cyl)` mean? How do they relate to this plot?
-
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = drv, y = cyl)) +
+  facet_grid(drv ~ cyl)
+```
+The three empty plots indicate that there are no data points for a vehicle that has 4wd and 5 cylinders and there are no data points for a vehicle that has rwd and either 4 or 5 cylinders
 
 
 **3:** What plots does the following code make? What does `.` do?
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_grid(drv ~ .)
 
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_grid(. ~ cyl)
+```
+The first equation does not facet with columns and the secon d does not facet with rows
 
 
 **4:** Take the first faceted plot below. What are the advantages to using faceting instead of the colour aesthetic? What are the disadvantages? How might the balance change if you had a larger dataset?
 
-
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) + 
+  facet_wrap(~ class, nrow = 2)
+```
+The advantage of a facet over changing the color aesthetic is that it helps to make data points more easily distinguishable for data with overlapping points. This advantage would probably be more noticeable with larger data sets as more points might have the possibility of overlapping.
 
 **5:** Read `?facet_wrap`. What does `nrow` do? What does `ncol` do? What other options control the layout of the individual panels? Why doesn’t `facet_grid()` have nrow and ncol argument?
-
+nrow and ncol sets the number of rows and columns for each facet_wrap. these do not apply to facet_grid as the rows and columns are determined by the variables and cannot be manually set.
 
 **6:** When using `facet_grid()` you should usually put the variable with more unique levels in the columns. Why?
 
-### Section 3.6: Geometric objects
+Putting variables with more unique levels in the column has the potential to describe more about the data categorically as most computer displays are widescreen.
 
+### Section 3.6: Geometric objects
+Usuing two different visual plots to describe the same data by setting different geoms in ggplot2
+
+```{r}
+#point (scatter)
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy))
+
+#smooth (trend)
+ggplot(data = mpg) + 
+  geom_smooth(mapping = aes(x = displ, y = hwy))
+```
+
+Using the variable 'drv' to create multple smooth plot lines within one smooth plot based on the different drive train types
+```{r}
+ggplot(data = mpg) + 
+  geom_smooth(mapping = aes(x = displ, y = hwy, linetype = drv))
+```
+
+grouping and assigning color using variables to smooth geom plots
+```{r}
+ggplot(data=mpg)+
+  geom_smooth(mapping=aes(x=displ,y=hwy))
+              
+ggplot(data=mpg)+
+  geom_smooth(mapping=aes(x=displ,y=hwy,group=drv))
+    
+ggplot(data=mpg)+
+  geom_smooth(
+    mapping = aes(x=displ,y=hwy,color=drv),
+    show.legend=FALSE
+  )
+```
+
+
+Placing multiple geoms within the same graph
+```{r}
+ggplot(data=mpg)+ 
+  geom_point(mapping=aes(x=displ,y=hwy))+
+  geom_smooth(mapping=aes(x=displ,y=hwy))
+```
+
+combining two geom plots and arragning them by color according to a variable
+```{r}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+  geom_point(mapping = aes(color = class)) + 
+  geom_smooth()
+```
 
 
 #### Section 3.6.1 Questions
