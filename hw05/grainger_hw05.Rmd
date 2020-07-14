@@ -12,6 +12,7 @@ library(tidyverse)
 
 
 ### Plot 1
+Trees Scatter plot
 
 Scatterplot displaying the trees dataset
 ```{r}
@@ -23,6 +24,9 @@ ggplot(data=trees)+
 ```
 
 ### Plot 2
+Lynx Linegraph
+
+a linegraph for the lynx data set with the color set to Maroon
 
 ```{r}
 data(lynx)
@@ -50,6 +54,9 @@ ggplot(data=lynxDF)+
 ```
 
 ### Plot 3
+iris scatter plot
+
+A scatter plot for the iris data set with manual labels set
 ```{r}
 #iris data set
 data(iris)
@@ -62,7 +69,9 @@ ggplot(data=iris)+
   labs(x="Petal Length", y = "Petal Width")
 ```
 
-##### Plots 4 and 5
+### Plots 4 and 5
+msleep Violin Plots
+
 Violin plots use geometric shapes with varying widths throughout to represent data density. The widest part of any one violin plot object represents the median of the data set. The wider the figure the higher the density of data points that fall within those corresponding values
 ```{r}
 #msleep data set
@@ -80,7 +89,62 @@ ggplot(data=msleep) +
   geom_violin(mapping=aes(x=vore,y=sleep_rem),fill="gray70")
 ```
 
+### Plot 7
+msleep boxplots
+
+A boxplot of the msleep data with the use or coord_flip
+```{r}
+ggplot(data=msleep)+
+  geom_boxplot(mapping=aes(x=order,y=sleep_total))+
+  coord_flip()
+```
+
+#### Plot 8
+msleep boxplot with points
 
 
+```{r}
+ggplot(data=msleep)+
+  aes(x=conservation,y=awake,color=conservation)+
+  geom_boxplot()+
+  geom_point(position="jitter")+
+  coord_flip()+
+  labs(x="Conservation",y="Awake",color="Conservation")
+```
 
+### Plots 9 and 10
+
+#Plot 9
+2 plots of the same data but with one showing individuals with a body weight less than 5 only to better view the bottom of the plots in the first plot
+```{r}
+?msleep
+
+ggplot(data=msleep)+
+  geom_point(mapping=aes(x=sleep_total,y=bodywt,color=vore),position="jitter")+
+  facet_wrap(~vore,ncol=3)
+
+# plot of all animals with a body weight less than 5. It was hard to see the points at the bottom of the graph
+msleep2 <- msleep$bodywt <5
+msleep3 <- msleep[msleep2,]
+ggplot(data=msleep3)+
+  geom_point(mapping=aes(x=sleep_total,y=bodywt,color=vore),position="jitter")+
+  facet_wrap(~vore,ncol=3)
+
+```
+Herbivores seem to have greater body weights associated with less sleep. This seems to weakly apply to carnivores as well. The other categories dont seem to show much of a clear trend 
+
+#Plot 10
+
+2 plots showing the same data but with facet_wrap applied to one
+```{r}
+data(msleep)
+
+ggplot(data=msleep)+
+  geom_point(mapping=aes(x=awake,y=brainwt,color=conservation),position="jitter")
+
+ggplot(data=msleep)+
+  geom_point(mapping=aes(x=awake,y=brainwt,color=conservation),position="jitter") +
+  facet_wrap(~vore,ncol=3)
+```
+Herbivores in general seem to spend more time awake than insectivores and carnivores. omnivores seem to have a high  concentration of individuals that are awake for around 15 hours. It would seem that more hours awake correllates with a higher brain weight.
 
