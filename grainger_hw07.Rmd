@@ -13,8 +13,11 @@ editor_options:
 library(tidyverse)
 ```
 
+## Limpets
 ```{r}
+#Define levels
 lim_levels <- c("PBL","KNRM","VBG","WP","PF","DP","SIO","CTZ1","CTZ2","CNM" )
+
 
 limpetz <- read_csv("data/limpets.csv", col_types= cols(
   Length = col_number(),
@@ -23,12 +26,15 @@ limpetz <- read_csv("data/limpets.csv", col_types= cols(
 ))
 limpetz
 
+#Boxplot of limpet data
 ggplot(data = Limpets, mapping = aes(x = Length, y = Site, color= Protected)) + 
   geom_boxplot(xlab="Size(mm)",ylab="Site")
 ```
 The Data is already tidy for use. According to the plot, sites 'WP' and 'DP' have outliars. The data appers to support limpets in protected zones having greater lengths/sizes than those in unprotected zones. 
 
+## Roseate Terns
 ```{r}
+# Load data
 data("roseate_terns")
 roseate_terns
 terns <- read_tsv("data/roseate_terns.txt")
@@ -40,6 +46,7 @@ terns3 <- terns2 %>%
   pivot_longer(c('AR','AL','AC','BR','BL','BC','JR','JL','JC'),names_to="Site",values_to="Population")
 terns3
 
+# Scatterplot
 terns3 %>%
   ggplot(mapping=aes(x=year,y=Population,color=Site,position="jitter"))+
   geom_point()
@@ -51,6 +58,62 @@ terns3 %>%
 ```
 Populations on site AR, AL, and BL appear to show the most significant increases with AR being the largest and most dramatic increase. JR seems to have had a population dcline. The noncontinuous plots have had some data rows dropped if there were any NA values within the row.
 
+## Blacklip Abalone
+```{r}
+#Setting up read.csv
+regular_ol_babalone <- read_csv("data/abalone.csv")
+regular_ol_babalone
+abalone2 <- select(regular_ol_abalone,- X1)
+
+#Test/Experiment
+abaloneee <- read_csv("data/abalone.csv",skip=1,col_names=TRUE)
+abaloneee
+
+#The boxplot
+ggplot(data=abalone2)+
+  geom_boxplot(mapping=aes(x=Height,y=Type))
+```
+
+```{r}
+# Determing if the outliars are caused by age or size
+
+#Setting up read.csv
+regular_ol_babalone <- read_csv("data/abalone.csv")
+regular_ol_babalone
+abalone2 <- select(regular_ol_abalone,- X1)
+
+#without jitter
+ggplot(data=abalone2)+
+  geom_point(mapping=aes(x=Height,y=Rings))
+
+#with jitter
+ggplot(data=abalone2)+
+  geom_point(mapping=aes(x=Height,y=Rings),position="jitter")
+```
+According to the plotted data the outliars appear ro be due to large size rather than age as the value of height for the outliars is relativly but the Rings value is low
+
+```{r}
+regular_ol_babalone <- read_csv("data/abalone.csv")
+regular_ol_babalone
+abalone2 <- select(regular_ol_abalone,- X1)
+
+fabalone <- filter(abalone2,Height<0.3)
+fabalone
+
+#A quick look at the data after filtering
+ggplot(data=fabalone)+
+  geom_point(mapping=aes(x=Height,y=Rings),position="jitter")
+
+#Just for fun
+ggplot(data=fabalone)+
+  geom_point(mapping=aes(x=Height,y=Rings,color=Type),position="jitter")
 
 
+```
+
+## Darters
+```{r}
+dtr <- read_fwf("data/darter.txt")
+dtr
+```
 
