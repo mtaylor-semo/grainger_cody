@@ -49,10 +49,8 @@ terns3 %>%
   geom_point()+
   facet_wrap(~Site,ncol=3)
 ```
+Populations on site AR, AL, and BL appear to show the most significant increases with AR being the largest and most dramatic increase. JR seems to have had a population dcline. The noncontinuous plots have had some data rows dropped if there were any NA values within the row.
 
-
-
-To be continued! I really want to learn how to do this. I will finish the rest the day after the due date.
 
 
 
