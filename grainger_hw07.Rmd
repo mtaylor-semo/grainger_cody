@@ -1,0 +1,11 @@
+---
+title: 'HW_07'
+author: "Cody Grainger"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  html_document:
+    df_print: paged
+editor_options:
+  chunk_output_type: inline
+---
+
