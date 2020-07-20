@@ -9,3 +9,50 @@ editor_options:
   chunk_output_type: inline
 ---
 
+```{r}
+library(tidyverse)
+```
+
+```{r}
+lim_levels <- c("PBL","KNRM","VBG","WP","PF","DP","SIO","CTZ1","CTZ2","CNM" )
+
+limpetz <- read_csv("data/limpets.csv", col_types= cols(
+  Length = col_number(),
+  Site = col_character(),
+  Protected = col_character()
+))
+limpetz
+
+ggplot(data = Limpets, mapping = aes(x = Length, y = Site, color= Protected)) + 
+  geom_boxplot(xlab="Size(mm)",ylab="Site")
+```
+The Data is already tidy for use. According to the plot, sites 'WP' and 'DP' have outliars. The data appers to support limpets in protected zones having greater lengths/sizes than those in unprotected zones. 
+
+```{r}
+data("roseate_terns")
+roseate_terns
+terns <- read_tsv("data/roseate_terns.txt")
+
+terns2 <- drop_na(terns,AR,AL,AC,BR,BL,BC,JR,JL,JC)
+terns2
+
+terns3 <- terns2 %>%
+  pivot_longer(c('AR','AL','AC','BR','BL','BC','JR','JL','JC'),names_to="Site",values_to="Population")
+terns3
+
+terns3 %>%
+  ggplot(mapping=aes(x=year,y=Population,color=Site,position="jitter"))+
+  geom_point()
+
+terns3 %>%
+  ggplot(mapping=aes(x=year,y=Population,color=Site))+
+  geom_point()+
+  facet_wrap(~Site,ncol=3)
+```
+
+
+
+To be continued! I really want to learn how to do this. I will finish the rest the day after the due date.
+
+
+
