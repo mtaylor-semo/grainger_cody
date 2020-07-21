@@ -100,6 +100,8 @@ abalone2 <- select(regular_ol_abalone,- X1)
 fabalone <- filter(abalone2,Height<0.3)
 fabalone
 
+#I have no clue how to do the factoring part. Always returns as data unusable by ggplot
+
 #A quick look at the data after filtering
 ggplot(data=fabalone)+
   geom_point(mapping=aes(x=Height,y=Rings),position="jitter")
