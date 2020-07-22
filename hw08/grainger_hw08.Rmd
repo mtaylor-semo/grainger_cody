@@ -142,6 +142,212 @@ cume_dist(y)
 
 Read and run all of the examples. Pay careful attention to the useful summary functions. Unless you really like baseball, skip the baseball part of 5.6.3.
 
+#
+
+# 5.6
+
+summarise() collapses a data frame into a single row
+
+group_by() analyzes individual groups of the dataset
+```{r}
+#Summarize without using group_by()
+summarise(flights, delay = mean(dep_delay, na.rm = TRUE))
+
+#Using group_by()
+by_day <- group_by(flights, year, month, day)
+summarise(by_day, delay = mean(dep_delay, na.rm = TRUE))
+
+```
+
+# 5.6.1
+Combining multipl eoperations with the pipe
+```{r}
+#Example without pipes
+by_dest <- group_by(flights, dest)
+delay <- summarise(by_dest,
+  count = n(),
+  dist = mean(distance, na.rm = TRUE),
+  delay = mean(arr_delay, na.rm = TRUE)
+)
+delay <- filter(delay, count > 20, dest != "HNL")
+
+delay
+#with corresponding plot
+ggplot(data = delay, mapping = aes(x = dist, y = delay)) +
+  geom_point(aes(size = count), alpha = 1/3) +
+  geom_smooth(se = FALSE)
+```
+
+In prparing the data,
+  Group flights by destination
+  summarize to compute distance, avg delay, and #of flights
+  
+  originally multiple data frames need a name but not with pipes!
+```{r}
+#Using pipes
+delays <- flights %>% 
+  group_by(dest) %>% 
+  summarise(
+    count = n(),
+    dist = mean(distance, na.rm = TRUE),
+    delay = mean(arr_delay, na.rm = TRUE)
+  ) %>% 
+  filter(count > 20, dest != "HNL")
+
+delays
+```
+Pipe notes: x %>% f(y) = f(x, y), and x %>% f(y) %>% g(z) = g(f(x, y), z)
+
+# 5.6.2
+Missing values
+
+na.rm
+(Missing inputs produce missing outputs)
+
+if we dont set it...
+```{r}
+#no na.rm
+flights %>% 
+  group_by(year, month, day) %>% 
+  summarise(mean = mean(dep_delay))
+
+#na.rm
+flights %>% 
+  group_by(year, month, day) %>% 
+  summarise(mean = mean(dep_delay, na.rm = TRUE))
+```
+```{r}
+# The missing values represent cancelled flights. Removing cancelled flights 
+
+not_cancelled <- flights %>% 
+  filter(!is.na(dep_delay), !is.na(arr_delay))
+
+not_cancelled %>% 
+  group_by(year, month, day) %>% 
+  summarise(mean = mean(dep_delay))
+```
+
+# 5.6.4
+Useful summary functions
+
+subsetting
+```{r}
+not_cancelled <- flights %>% 
+  filter(!is.na(dep_delay), !is.na(arr_delay))
+
+#subsetting
+not_cancelled %>% 
+  group_by(year, month, day) %>% 
+  summarise(
+    avg_delay1 = mean(arr_delay),
+    avg_delay2 = mean(arr_delay[arr_delay > 0]) # the average positive delay
+  )
+```
+
+Measure of spread 
+sd(x) - standard deviation, IQR(x) - interquartile range, mad(x) - median absolute deviation
+```{r}
+#Spread
+not_cancelled %>% 
+  group_by(dest) %>% 
+  summarise(distance_sd = sd(distance)) %>% 
+  arrange(desc(distance_sd))
+```
+
+Mrasures of rank
+min(x), quantile(x,0.25) - find values of x greater than 25% of the values but less than the remaining 75%, max(x)
+```{r}
+#rank
+#When do the first and last flights leave?
+not_cancelled %>% 
+  group_by(year, month, day) %>% 
+  summarise(
+    first = min(dep_time),
+    last = max(dep_time)
+  )
+```
+
+Measure position
+first(x), nth(x,2), last(x)
+```{r}
+not_cancelled %>% 
+  group_by(year, month, day) %>% 
+  summarise(
+    first_dep = first(dep_time), 
+    last_dep = last(dep_time)
+  )
+
+#Filtering gives all of the original variables
+not_cancelled %>% 
+  group_by(year, month, day) %>% 
+  mutate(r = min_rank(desc(dep_time))) %>% 
+  filter(r %in% range(r))
+```
+
+Counts
+n() for returning size of current group
+sum(!is.na(x)) to count non-missing values
+n_distinct(x) counts number of distinct values
+```{r}
+#Counts
+not_cancelled %>% 
+  group_by(dest) %>% 
+  summarise(carriers = n_distinct(carrier)) %>% 
+  arrange(desc(carriers))
+
+#Simple count
+not_cancelled %>% 
+  count(dest)
+
+#Optionally providing the weight variable
+not_cancelled %>% 
+  count(tailnum, wt = distance)
+```
+
+Counts and proportions of logical values
+When used with numeric functions. TRUE is converted to 1 and FALSE to 0
+```{r}
+#Number of TRUE values for n_early each day
+not_cancelled %>% 
+  group_by(year, month, day) %>% 
+  summarise(n_early = sum(dep_time < 500))
+
+#Proportion of flights delayed more than an hour
+not_cancelled %>% 
+  group_by(year, month, day) %>% 
+  summarise(hour_prop = mean(arr_delay > 60))
+```
+
+#5.6.5
+Grouping by multiple variables
+each summary peels off one level of grouping
+```{r}
+#Sumamrizes multiple levels of data
+
+daily <- group_by(flights, year, month, day)
+per_day   <- summarise(daily, flights = n())
+per_day
+
+per_month <- summarise(per_day, flights = sum(flights))
+per_month
+
+per_year  <- summarise(per_month, flights = sum(flights))
+per_year
+
+```
+
+#5.6.6 
+Ungrouping
+ungroup() ungroups previously created groups
+```{r}
+# No longer grouped by date
+daily %>%
+  ungroup() %>%
+  summarise(flights = n())
+
+```
+
+
 ### Section 5.7: Grouped mutates (and filters)
 
 Read and run all of the examples.
