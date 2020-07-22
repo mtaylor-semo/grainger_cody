@@ -351,3 +351,28 @@ daily %>%
 ### Section 5.7: Grouped mutates (and filters)
 
 Read and run all of the examples.
+
+Using group_by with operators mutate() and filter()
+
+```{r}
+#Filter to find the worst members of each group
+flights_sml %>% 
+  group_by(year, month, day) %>%
+  filter(rank(desc(arr_delay)) < 10)
+
+#Find all groups bigger than a threshold
+popular_dests <- flights %>% 
+  group_by(dest) %>% 
+  filter(n() > 365)
+popular_dests
+
+#Per group metrics
+popular_dests %>% 
+  filter(arr_delay > 0) %>% 
+  mutate(prop_delay = arr_delay / sum(arr_delay)) %>% 
+  select(year:day, dest, arr_delay, prop_delay)
+```
+
+
+
+
