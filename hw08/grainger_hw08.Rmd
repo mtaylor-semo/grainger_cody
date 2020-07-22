@@ -11,21 +11,132 @@ editor_options:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-- Change "your name" in the YAML header above to your name.
-
-- As usual, enter the examples in code chunks and run them, unless told otherwise.
-
 ## Chapter 5: Data transformation
 
 Read [R4ds Chapter 5: Data transformation](https://r4ds.had.co.nz/transform.html), sections 5-7.
 
 **You do not answer any of the questions this week.** Just read and run all of the examples as noted below. Pay attention to the code you enter for the examples. You will be applying the information in future assignments.
 
+# 5.1.1
+
+Load load packages/data
+
+```{r}
+library(nycflights13)
+library(tidyverse)
+```
+
+
 ### Section 5.5: Add new variables with `mutate()`
 
 Type and run all of the examples.
 
 Pay careful attention to the useful creation functions in section 5.5.1. 
+
+#
+
+Adding new columns with the mutate function. Mutate() adds columns to the end of the data set
+
+```{r}
+# --
+# Creating new columns
+flights_sml <- select(flights, 
+  year:day, 
+  ends_with("delay"), 
+  distance, 
+  air_time
+)
+mutate(flights_sml,
+  gain = dep_delay - arr_delay,
+  speed = distance / air_time * 60
+)
+
+# --
+# Referring to new columns created
+mutate(flights_sml,
+  gain = dep_delay - arr_delay,
+  hours = air_time / 60,
+  gain_per_hour = gain / hours
+)
+
+# --
+#  Transmute()
+#When you oly want to keep the new variable
+transmute(flights,
+  gain = dep_delay - arr_delay,
+  hours = air_time / 60,
+  gain_per_hour = gain / hours
+)
+```
+#
+
+# 5.5.1
+
+Useful creation Functions
+
+Functions for mutate() must be vectorized aka it will only input and output vector values
+
+Arithmetic operators - +, -, *, /, ^
+   Ex: "air_time / 60, hours * 60 + minute"
+   
+Arithmetic functions with aggregate functions
+   Ex: x/sum(x) for proportion of a total, y-mean(y) computes difference from the mean
+   
+Modular arithmetic %/% (integer division) and %% (remainder), where x==y*(x%/%y)+(x%%y)
+
+```{r}
+#Modular arithmetic
+transmute(flights,
+  dep_time,
+  hour = dep_time %/% 100,
+  minute = dep_time %% 100
+)
+```
+Logs can be used - log(), log2(), log10()
+
+Offsets allow leading or lagging values. lead(), lag()
+   Ex: x-lag(x) for running differences
+   . x!=lag(x) to look for values changed. useful with group_by()
+```{r}
+#lag and lead
+x <- c(1:10)
+x
+lag(x)
+lead(x)
+```
+
+cumulative and rolling aggregates
+Sumns, products, mins, maxes, means(dplyr only)
+cumsum(), cumprod(), cummin(), cummax(), cummean()
+```{r}
+x <- c(1:10)
+x
+cumsum(x)
+cummean(x)
+```
+
+Ranking
+min_rank() gives smallest values the smallest rank. desc(x) to give the largest values first
+```{r}
+#Ranking
+y <- c(1, 2, 2, NA, 3, 4)
+y
+min_rank(y)
+min_rank(desc(y))
+```
+Ranking variants
+   row_number(), dense_rank(), percent_rank(), cume_dist(), ntile()
+```{r}
+# Ranking variants
+y <- c(1, 2, 2, NA, 3, 4)
+y
+
+row_number(y)
+dense_rank(y)
+percent_rank(y)
+cume_dist(y)
+```
+
 
 ### Section 5.6: Grouped summaries with `summarise()`
 
