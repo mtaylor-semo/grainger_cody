@@ -2,11 +2,35 @@
 # Hw08 functions
 
 
+library(tidyverse)
+
 #Standard error of the mean
 #First argument finds the standard deviation of the variable
 #the second arguments finds the square root of the legnth of x
-std_err <- sd(x)/sqrt(length(x))
+std_err_m <- sd(x)/sqrt(length(x))
 
+average_
+
+average <- function(args) {
+  total <- sum(args)
+  avg <- total/length(args)
+  return(avg)
+}
+
+#std_err function
+
+std_err <- function(args) {
+  std_dev <- sd(args)
+  sqrtL <- sqrt(length(args))
+  return(std_dev/sqrtL)
+
+}
+
+# Test average
+# average(c(5,11,19))
+
+#Test std_err
+# std_err(c(0, 1, 1, 2, 3, 5, 8, 13, 21, 34))
 
 #First 5 values for mass and tarsus
 mass <- c(26.7, 22.8, 25.7, 26.1, 23.9)
