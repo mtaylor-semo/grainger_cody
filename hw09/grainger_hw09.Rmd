@@ -18,6 +18,25 @@ source("my_functions.R")
 ```
 
 ```{r}
-darters <- read_csv("data/darters.csv")
+#For some reason all on its own R has decided to stop using my main folder as the working directory. I have changed nothing about how I import data either. When i use getwd() my console tells me my project folder grainger_cody is the WD ("G:/Documents/BI685/grainger_cody" to be exact) yet when i run "read_csv("data/darters.csv")" it says "Error: 'data/darters.csv' does not exist in current working directory ('G:/Documents/BI685/grainger_cody/hw09')" . This has not been an issue the entire class until now. It does work when I manually set the WD in the chunk so I might have to do that every chunk
+
+setwd('G:/Documents/BI685/grainger_cody')
+data("darters")
+(drtrs <- read_csv("data/darters.csv"))
+
+(drtrs_f <- filter(drtrs, !species == "tetrazonum", !species == "zonale"))
+
+```
+
+```{r}
+dtr_m <- mutate(drtrs_f,
+       total_substrate = minsub+majsub,
+       riffle = replace(riffle, riffle==1, "Riffle 1"),
+       riffle = replace(riffle, riffle==2, "Riffle 2"),
+       sex = replace(sex,sex=="m","Male"),
+       sex= replace(sex,sex=="f","Female")
+       )
+
+dtr_m
 ```
 
