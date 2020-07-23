@@ -1755,22 +1755,36 @@ summary {
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5saWJyYXJ5KHNtYXRyKVxubGlicmFyeShoZXJlKVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5saWJyYXJ5KHNtYXRyKVxubGlicmFyeShoZXJlKVxubGlicmFyeShrbml0cilcbmBgYCJ9 -->
 <pre class="r"><code>library(tidyverse)
 library(smatr)
-library(here)</code></pre>
+library(here)
+library(knitr)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiaGVyZSgpIHN0YXJ0cyBhdCBHOi9Eb2N1bWVudHMvQkk2ODUvZ3JhaW5nZXJfY29keVxuIn0= -->
-<pre><code>here() starts at G:/Documents/BI685/grainger_cody</code></pre>
+<!-- rnb-chunk-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc291cmNlKFwibXlfZnVuY3Rpb25zLlJcIilcbmBgYCJ9 -->
+<pre class="r"><code>source(&quot;my_functions.R&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiY2Fubm90IG9wZW4gZmlsZSAnbXlfZnVuY3Rpb25zLlInOiBObyBzdWNoIGZpbGUgb3IgZGlyZWN0b3J5RXJyb3IgaW4gZmlsZShmaWxlbmFtZSwgXCJyXCIsIGVuY29kaW5nID0gZW5jb2RpbmcpIDogXG4gIGNhbm5vdCBvcGVuIHRoZSBjb25uZWN0aW9uXG4ifQ== -->
+<pre><code>cannot open file &#39;my_functions.R&#39;: No such file or directoryError in file(filename, &quot;r&quot;, encoding = encoding) : 
+  cannot open the connection</code></pre>
 <!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShrbml0cilcbmBgYCJ9 -->
-<pre class="r"><code>library(knitr)</code></pre>
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGFydGVycyA8LSByZWFkX2NzdihcImRhdGEvZGFydGVycy5jc3ZcIilcbmBgYCJ9 -->
+<pre class="r"><code>darters &lt;- read_csv(&quot;data/darters.csv&quot;)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3I6ICdkYXRhL2RhcnRlcnMuY3N2JyBkb2VzIG5vdCBleGlzdCBpbiBjdXJyZW50IHdvcmtpbmcgZGlyZWN0b3J5ICgnRzovRG9jdW1lbnRzL0JJNjg1L2dyYWluZ2VyX2NvZHkvaHcwOScpLlxuIn0= -->
+<pre><code>Error: &#39;data/darters.csv&#39; does not exist in current working directory (&#39;G:/Documents/BI685/grainger_cody/hw09&#39;).</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkhXIDA5Ig0KYXV0aG9yOiAiQ29keSBHcmFpbmdlciINCmRhdGU6ICJgciBmb3JtYXQoU3lzLnRpbWUoKSwgJyVkICVCICVZJylgIg0Kb3V0cHV0OiBodG1sX25vdGVib29rDQplZGl0b3Jfb3B0aW9uczogDQogIGNodW5rX291dHB1dF90eXBlOiBpbmxpbmUNCi0tLQ0KDQpgYGB7cn0NCmxpYnJhcnkodGlkeXZlcnNlKQ0KbGlicmFyeShzbWF0cikNCmxpYnJhcnkoaGVyZSkNCmxpYnJhcnkoa25pdHIpDQpgYGANCg0KDQo=</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkhXIDA5Ig0KYXV0aG9yOiAiQ29keSBHcmFpbmdlciINCmRhdGU6ICJgciBmb3JtYXQoU3lzLnRpbWUoKSwgJyVkICVCICVZJylgIg0Kb3V0cHV0OiBodG1sX25vdGVib29rDQplZGl0b3Jfb3B0aW9uczogDQogIGNodW5rX291dHB1dF90eXBlOiBpbmxpbmUNCi0tLQ0KDQpgYGB7cn0NCmxpYnJhcnkodGlkeXZlcnNlKQ0KbGlicmFyeShzbWF0cikNCmxpYnJhcnkoaGVyZSkNCmxpYnJhcnkoa25pdHIpDQpgYGANCmBgYHtyfQ0Kc291cmNlKCJteV9mdW5jdGlvbnMuUiIpDQpgYGANCg0KYGBge3J9DQpkYXJ0ZXJzIDwtIHJlYWRfY3N2KCJkYXRhL2RhcnRlcnMuY3N2IikNCmBgYA0KDQo=</div>
 
 
 

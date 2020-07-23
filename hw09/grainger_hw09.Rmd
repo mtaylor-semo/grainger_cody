@@ -13,5 +13,11 @@ library(smatr)
 library(here)
 library(knitr)
 ```
+```{r}
+source("my_functions.R")
+```
 
+```{r}
+darters <- read_csv("data/darters.csv")
+```
 
