@@ -7,9 +7,7 @@ library(tidyverse)
 #Standard error of the mean
 #First argument finds the standard deviation of the variable
 #the second arguments finds the square root of the legnth of x
-std_err_m <- sd(x)/sqrt(length(x))
-
-average_
+std_err_e <- sd(x)/sqrt(length(x))
 
 average <- function(args) {
   total <- sum(args)
@@ -35,11 +33,17 @@ std_err <- function(args) {
 #First 5 values for mass and tarsus
 mass <- c(26.7, 22.8, 25.7, 26.1, 23.9)
 tarsus <- c(18.4, 17.5, 18.4, 18.0, 18.2)
+slope <- 1.5
 
 # Mass is the vector that contains individual masses
 # Tarsus contains individual tarsus measurements
 # The mass of the individual is multiplied by the division of the mean tarsus length by the individual tarsus lengths
 # 'b' refers to the slope variable
-scaled_mass <- mass * ((mean(tarsus)/tarsus)^b)
-scaled_mass
-  
+scaled_mass_e <- mass * ((mean(tarsus)/tarsus)^b)
+
+scaled_mass <- function(mass,tarsus,slope){
+  tss <- (mean(tarsus)/tarsus)^slope
+  return(mass*tss)
+}
+
+scaled_mass(mass,tarsus,slope)
