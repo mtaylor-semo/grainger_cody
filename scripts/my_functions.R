@@ -41,9 +41,9 @@ slope <- 1.5
 # 'b' refers to the slope variable
 scaled_mass_e <- mass * ((mean(tarsus)/tarsus)^b)
 
-scaled_mass <- function(mass,tarsus,slope){
-  tss <- (mean(tarsus)/tarsus)^slope
+scaled_mass <- function(mass,tarsus,b){
+  tss <- (mean(tarsus)/tarsus)^b
   return(mass*tss)
 }
 
-scaled_mass(mass,tarsus,slope)
+scaled_mass(mass,tarsus,b)

@@ -8,27 +8,30 @@ editor_options:
 ---
 
 ```{r}
+#Loading libraries
 library(tidyverse)
 library(smatr)
 library(here)
 library(knitr)
 ```
-```{r}
 
-```
 
 ```{r}
-#For some reason all on its own R has decided to stop using my main folder as the working directory. I have changed nothing about how I import data either. When i use getwd() my console tells me my project folder grainger_cody is the WD ("G:/Documents/BI685/grainger_cody" to be exact) yet when i run "read_csv("data/darters.csv")" it says "Error: 'data/darters.csv' does not exist in current working directory ('G:/Documents/BI685/grainger_cody/hw09')" . I even tried to run my old assignments chunks that had working read_csv code and they all faield this time too. Updated R and reinstalled tidyverse but didnt help. This has not been an issue the entire class until now. It does work when I manually set the WD in the chunk so I might have to do that every chunk. when i remove the setwd it fails again.
+#For some reason all on its own R has decided to stop using my main folder as the working directory. I have changed nothing about how I import data either. When i use getwd() my console tells me my project folder grainger_cody is the WD ("G:/Documents/BI685/grainger_cody" to be exact) yet when i run "read_csv("data/darters.csv")" it says "Error: 'data/darters.csv' does not exist in current working directory ('G:/Documents/BI685/grainger_cody/hw09')" . I even tried to run my old assignments chunks that had previously working read_csv code and they all faield this time too. Updated R and reinstalled tidyverse but didnt help. This has not been an issue the entire class until now. It does work when I manually set the WD in the chunk so I might have to do that every chunk. when i remove the setwd it fails again.
 
+#Setting chunk wd and importing the darters data set
 setwd('G:/Documents/BI685/grainger_cody')
 data("darters")
 (drtrs <- read_csv("data/darters.csv"))
 
+#filtering out species tetrazonum and zonale
 (drtrs_f <- filter(drtrs, !species == "tetrazonum", !species == "zonale",!is.na(length)))
 
 ```
 
 ```{r}
+
+#mutating darters data to modify values within columns riffle and sex
 dtr_m <- mutate(drtrs_f,
        total_substrate = minsub+majsub,
        riffle = replace(riffle, riffle==1, "Riffle 1"),
@@ -39,8 +42,10 @@ dtr_m <- mutate(drtrs_f,
 
 dtr_m
 ```
+Total substrate is = 1 for all data points
 
 ```{r}
+#Grouping and summarising data
 grp_dtr <- dtr_m %>%
   group_by(riffle,species,length, depth, velocity) %>%
   summarise(
@@ -52,11 +57,14 @@ grp_dtr <- dtr_m %>%
   
 grp_dtr
 
-
+#Kable
 kable(grp_dtr)
+
+
 ```
 
 ```{r}
+#Plotting points with stat summary with a facet
 ggplot(data=grp_dtr)+
   geom_point(mapping = aes(x=species,y=length))+
   facet_wrap(~riffle)+
@@ -64,6 +72,7 @@ ggplot(data=grp_dtr)+
     mapping = aes(x=species,y=length)
      )
 
+#Plotting stat summary with a facet
 ggplot(data=grp_dtr)+
   facet_wrap(~riffle)+
   coord_flip()+
@@ -72,6 +81,7 @@ ggplot(data=grp_dtr)+
     mapping = aes(x=species,y=length)
      )
 
+#Plotting stat summary with a facet and soem aesthetic changes
 ggplot(data=grp_dtr)+
   facet_wrap(~riffle)+
   coord_flip()+
@@ -85,4 +95,80 @@ ggplot(data=grp_dtr)+
      )
 
 ```
+for sites spectabile and caeruleum length is much greater for riffle 1 than for riffle 2. blenniodes was longer at riffle 2
+```{r}
+#Had to set WD again otherwise I could not continue
+setwd('G:/Documents/BI685/grainger_cody')
 
+#setting the decimal mark so the data can be properly read
+feathers <- read_csv("data/feathers.csv",locale=locale(decimal_mark = ","))
+
+#Renaming feathers col names for efficiency
+feathers <- rename(feathers, c("capture_date"="Capture Date","day"="Date", "site"="Site","urban_score"="Urba Score","cortF"="CortF ng/mg","cortB"="CortF ng/mm","sex"="Sex","smi"="SMI","tarsus"="Tarsus","mass"="Mass","basal_cort"="Bas_Cort","stress_cort"="Stress_Cort" ) )
+  
+feathers
+
+```
+
+```{r}
+#Calculating the mean for tarsus
+(mean_tarsus <- mean(feathers$tarsus))
+
+#Adding logarithms of mas and tarsus as new columns
+feathers_2 <- mutate(feathers,
+       log_mass = log(mass),
+       log_tarsus = log(tarsus)
+       )
+
+feathers_2
+
+major_axis <- sma(log_mass~log_tarsus,data=feathers_2)
+summary(major_axis)
+
+#Getting the slope
+b <- coef(major_axis)
+b <- b[2]
+b
+
+#Assigning mass and tarsus to variables
+mass=feathers$mass
+tarsus=feathers$tarsus
+
+#Adding  new smi based on the old smi used in a custom function for scaled mass
+feathers_3 <- mutate(feathers_2,
+                     new_smi = scaled_mass(mass,tarsus,b))
+
+feathers_3
+
+#Summarising the data to get the means of basal and stress cort levels
+feathers_3_summ <- feathers_3 %>% group_by(site) %>%
+  summarise(
+    basal_cort=mean(basal_cort,na.rm=TRUE),
+    stress_cort=mean(stress_cort,na.rm=TRUE)
+    
+  )
+feathers_3_summ
+
+#Adding the standard error
+feathers_4 <- mutate(feathers_3_summ,
+                     basal_err = std_err(basal_cort),
+                     stress_err = std_err(stress_cort)
+)
+feathers_4
+```
+```{r}
+#Plotting boxplots of the feathers_3 data
+feathers_3 %>% ggplot(mapping=aes(x=site,new_smi))+
+  geom_boxplot()
+
+#scatterplot with error bars as well as additional aesthetic options for grad students (for r SEMO class). added geom_errorbar
+feathers_4 %>% ggplot(mapping=aes(x=site,basal_cort))+
+  geom_point(color="maroon",size=3)+
+  geom_errorbar(ymin=feathers_4$basal_cort-feathers_4$basal_err, ymax=feathers_4$basal_cort-feathers_4$basal_err)
+  
+#Using geom_linerange instead of geom_errorbar
+feathers_4 %>% ggplot(mapping=aes(x=site,basal_cort))+
+  geom_point()+
+  geom_linerange(ymin=feathers_4$basal_cort-feathers_4$basal_err, ymax=feathers_4$basal_cort-feathers_4$basal_err)
+```
+For the boxplots as we move from CEBC to LAROCHELLE to NIORT to VILLEFOLLET we see a decrease in the median smi
