@@ -9,6 +9,8 @@ editor_options:
 
 ### Hw_10: Data Visualization 2
 
+##Import and wrangle
+
 Loading initial Libraries
 ```{r}
 library(here)
@@ -18,6 +20,29 @@ library(patchwork)
 ```
 Importing the 'sparrows.txt' data and assigning it to a variable
 ```{r}
-sparrows_raw <- read_csv(here("data","sparrows.txt"))
+sparrows_raw <- read_tsv(here("data","sparrows.txt"))
+
+sparrows_raw
+```
+Creating two new columns for the sparrows_raw data and creating a new tibble. setting the row order will create a variable to label the rows 1:1265 and the "." references the original dataframe for reference in the pipe
+```{r}
+sparrows <- sparrows_raw %>%
+  mutate(box_group="sparrows",
+         row_order=1:nrow(.))
+
+view(sparrows)
+```
+The rest of the notebook will reference Zuur et al.
+
+## Figure 2: Outliars
+
+A boxplot for the sparrows data to observe possible outliars
+```{r}
+sparrows %>%
+  ggplot(aes(x=box_group,
+             y=wingcrd))+
+  geom_boxplot(width=0.25)+
+  labs(x=NULL,
+       y="Wing length (mm)")
 ```
 
