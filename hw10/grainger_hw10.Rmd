@@ -1,0 +1,23 @@
+---
+title: "HW_10"
+author: "Cody Grainger"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+### Hw_10: Data Visualization 2
+
+Loading initial Libraries
+```{r}
+library(here)
+library(tidyverse)
+library(GGally)
+library(patchwork)
+```
+Importing the 'sparrows.txt' data and assigning it to a variable
+```{r}
+sparrows_raw <- read_csv(here("data","sparrows.txt"))
+```
+
