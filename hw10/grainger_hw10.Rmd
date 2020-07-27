@@ -38,11 +38,171 @@ The rest of the notebook will reference Zuur et al.
 
 A boxplot for the sparrows data to observe possible outliars
 ```{r}
-sparrows %>%
+plot_box <- sparrows %>%
   ggplot(aes(x=box_group,
              y=wingcrd))+
   geom_boxplot(width=0.25)+
   labs(x=NULL,
        y="Wing length (mm)")
+
+plot_box
+```
+
+For better assessment of the full range of values a cleveland plot can be used
+```{r}
+plot_cleveland <- sparrows %>%
+  ggplot(aes(x= wingcrd,y=row_order))+
+  geom_point()+
+  labs(x="Wing length (mm)",
+       y="Order of the data")
+
+plot_cleveland
+```
+using the patchwork package to put the plots together side by side
+```{r}
+plot_box+plot_cleveland
+```
+Flipping the cleveland plot for better comparison with the boxplot
+```{r}
+plot_box+plot_cleveland+coord_flip()
+```
+
+## Figure 3: Outliars
+
+Creating 6 scatter plots and combining them with the patchwork package. ncol set to 3
+```{r}
+#culmen
+p_culmen <- sparrows %>% 
+  ggplot(aes(y=row_order))+
+  geom_point(aes(x=culmen))+
+  theme(axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+
+#nalopsi
+p_nalospi <- sparrows %>% 
+  ggplot(aes(y=row_order))+
+  geom_point(aes(x=nalospi))+
+  theme(axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+
+#wt
+p_wt <- sparrows %>% 
+  ggplot(aes(y=row_order))+
+  geom_point(aes(x=wt))+
+  theme(axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+
+#wingcrd
+p_wingcrd <- sparrows %>% 
+  ggplot(aes(y=row_order))+
+  geom_point(aes(x=wingcrd))+
+  theme(axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+
+#tarsus
+p_tarsus <- sparrows %>% 
+  ggplot(aes(y=row_order))+
+  geom_point(aes(x=tarsus))+
+  theme(axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+
+#head
+p_head <- sparrows %>% 
+  ggplot(aes(y=row_order))+
+  geom_point(aes(x=head))+
+  theme(axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+
+
+plot2 <- p_culmen+p_nalospi+p_wt+p_wingcrd+p_tarsus+p_head+plot_layout(ncol=3)
+
+plot2
+```
+
+## Figure 5: distribution
+
+assigning individuals to a bin. bin width set to 0.5 for the sparrows data. then using facet_wrap to alphabetically arrange the plots by month for plot 2. Additionally a density plot is created and colored according to months jun, july,august
+```{r}
+#Histogram
+h1 <- sparrows %>%
+  filter(Month %in% 6:8) %>% 
+  ggplot()+
+  geom_histogram(aes(x=wt),
+                 binwidth=0.5,
+                 boundary=0,
+                 closed="right",
+                 color="black")+
+  scale_x_continuous(breaks=seq(14,28,by=2))
+h1
+
+#Histogram2: Faceted Histogram
+h2 <- sparrows %>%
+  filter(Month %in% 6:8) %>% 
+  mutate(Month=case_when(
+    Month==6~"June",
+    Month==7~"July",
+    Month==8~"August")) %>% 
+  ggplot()+
+  geom_histogram(aes(x=wt),
+                 binwidth=0.5,
+                 boundary=0,
+                 color="black")+
+  scale_x_continuous(breaks=seq(14,28,by=2))+
+  facet_wrap(~Month,ncol=1)
+h2
+
+#density plot
+h3 <- sparrows %>%
+  filter(Month %in% 6:8) %>% 
+  mutate(Month=case_when(
+    Month==6~"June",
+    Month==7~"July",
+    Month==8~"August")) %>% 
+  ggplot()+
+  geom_density(aes(x=wt,fill=Month,alpha=0.30),
+                 binwidth=0.5,
+                 boundary=0,
+                 color="black")+
+  scale_x_continuous(breaks=seq(14,28,by=2))
+
+h3
+
+```
+Adding the 2 plots together
+```{r}
+h1+h2
+```
+using ggscatmat many scatter plots can be created quickly
+```{r}
+sparrows %>% ggscatmat(columns=1:7)
+```
+
+## Figure 11: interactions
+
+The code below shows the interaction between sex and season. only months 5-9 are used and immature individuals are removed.mutate assigns names to the months according to the months number in the data set.a trend line is added with the se shader removed.
+```{r}
+month_order=c("May","June","July","August","September")
+sparrows %>% 
+  filter(Month %in% 5:9,
+         Sex !=0) %>% 
+  mutate(Month=case_when(
+    Month==5 ~ "May",
+    Month==6 ~ "June",
+    Month==7 ~ "July",
+    Month==8 ~ "August",
+    Month==9 ~ "September"),
+    Month=factor(Month,levels=month_order,ordered=TRUE),
+    Sex=ifelse(Sex==4,"Male","Female")) %>% 
+  ggplot(aes(x=wingcrd,
+             y=wt))+
+  geom_point()+
+  geom_smooth(method="lm",se=FALSE)+
+  facet_grid(Sex~Month)
 ```
 
