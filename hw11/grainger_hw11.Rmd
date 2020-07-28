@@ -1,0 +1,44 @@
+---
+title: "HW_11"
+author: "Cody Grainger"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+#### HW 11: Data Visualization I (con't)
+
+
+
+## Libraries
+```{r}
+library(tidyverse)
+library(here)
+library(GGally)
+library(patchwork)
+```
+
+# Importing data
+
+Importing the 'aegla_crabs' data and assigning it to a variable
+```{r}
+crabs_raw <- read_csv(here("data","aegla_crabs.csv"))
+
+crabs_raw
+```
+
+## Data Exploration/Wrangling for Aegla crabs
+
+The function 'select()' is used to remove columns Site, AT, WT, Crab, Shrimp, Aeglam, AeglaFo. drop.na() is used to remove a row with missing water quality data. The result will be stored in created variable crabz.
+
+```{r}
+#Using the 'crabs_raw' imported above
+crabz <- crabs_raw %>% select(Width,Depth,Flow,pH,TDS,Cond,N,Ni,Nt,Phos,Mg,Ca) %>%
+  drop_na()
+
+crabz
+```
+
+
+
