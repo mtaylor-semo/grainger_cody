@@ -34,11 +34,219 @@ The function 'select()' is used to remove columns Site, AT, WT, Crab, Shrimp, Ae
 
 ```{r}
 #Using the 'crabs_raw' imported above
-crabz <- crabs_raw %>% select(Width,Depth,Flow,pH,TDS,Cond,N,Ni,Nt,Phos,Mg,Ca) %>%
-  drop_na()
+crabb <- crabs_raw %>% select(Width,Depth,Flow,pH,TDS,Cond,N,Ni,Nt,Phos,Mg,Ca) %>%
+  drop_na() %>%
+  mutate(box_group="crabs",
+         row_order=1:nrow(.))
 
-crabz
+crabb
 ```
 
+Below are boxplots created to observe where possible outliars might be for each variable. Each variable is tested against a dummy variable("box_group") and the results are combined with patchwork. columns set to 4 on patchwork.
+```{r}
+# Assigning a boxplot of each variable against the dumm yvariable 'box_group'. 
+c_width <- crabb %>%
+  ggplot(aes(x=box_group,y=Width)) +
+  geom_boxplot()+
+  labs(x=NULL,
+       y="Width")
+c_depth <- crabb %>%
+  ggplot(aes(x=box_group,y=Depth)) +
+  geom_boxplot()+
+  labs(x=NULL,
+       y="Depth")
+c_flow <- crabb %>%
+  ggplot(aes(x=box_group,y=Flow)) +
+  geom_boxplot()+
+  labs(x=NULL,
+       y="Flow")
+c_ph <- crabb %>%
+  ggplot(aes(x=box_group,y=pH)) +
+  geom_boxplot()+
+  labs(x=NULL,
+       y="pH")
+c_tds <- crabb %>%
+  ggplot(aes(x=box_group,y=TDS)) +
+  geom_boxplot()+
+  labs(x=NULL,
+       y="TDS")
+c_cond <- crabb %>%
+  ggplot(aes(x=box_group,y=Cond)) +
+  geom_boxplot()+
+  labs(x=NULL,
+       y="Cond")
+c_n <- crabb %>%
+  ggplot(aes(x=box_group,y=N)) +
+  geom_boxplot()+
+  labs(x=NULL,
+       y="N")
+c_ni <- crabb %>%
+  ggplot(aes(x=box_group,y=Ni)) +
+  geom_boxplot()+
+  labs(x=NULL,
+       y="Ni")
+c_nt <- crabb %>%
+  ggplot(aes(x=box_group,y=Nt)) +
+  geom_boxplot()+
+  labs(x=NULL,
+       y="Nt")
+c_phos <- crabb %>%
+  ggplot(aes(x=box_group,y=Phos)) +
+  geom_boxplot()+
+  labs(x=NULL,
+       y="Phos")
+c_mg <- crabb %>%
+  ggplot(aes(x=box_group,y=Mg)) +
+  geom_boxplot()+
+  labs(x=NULL,
+       y="Mg")
+c_ca <- crabb %>%
+  ggplot(aes(x=box_group,y=Ca)) +
+  geom_boxplot()+
+  labs(x=NULL,
+       y="Ca")
 
+ c_width+c_depth+c_flow+c_ph+c_tds+c_cond+c_n+c_ni+c_nt+c_phos+c_mg+c_ca+plot_layout(ncol=4)
+
+```
+After using patchwork to display all 12 variables on individual boxplots the 3 variables that I percieved as having the furthest potential outliars are varbiables "Phos", "Flow", and "Nt". For this assessment I defined 'furthest potential outliars' as what I percieve to be the variable with the greatest distance between the furthest point/potential outliar and the max or min depending on which one the data point is closer to relative to that same space in each boxplot. Nt especially stands out to me as the furthest potential outliar is very far from the max. The same could be said for Phos but based on visuals alone I feel the relative distance of the furthest outliar from the max is greatest on variable Nt, but not by much. Flow would be the third furhtest but I do not believe this is the true outliar of the data set.
+
+# Creating Cleveland plots
+
+Below 4 variables will displayed on a cleveland plot and patched together in a 2x2 by using the patchwork package.
+
+```{r}
+# N
+C_N <- crabb %>% 
+  ggplot(aes(y=row_order))+
+  geom_point(aes(x=N))+
+  theme(axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+
+# Cond
+C_Cond <- crabb %>% 
+  ggplot(aes(y=row_order))+
+  geom_point(aes(x=Cond))+
+  theme(axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+
+# pH
+C_pH <- crabb %>% 
+  ggplot(aes(y=row_order))+
+  geom_point(aes(x=pH))+
+  theme(axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+
+# Depth
+C_Depth <- crabb %>% 
+  ggplot(aes(y=row_order))+
+  geom_point(aes(x=Depth))+
+  theme(axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+
+#Patchwork
+C_N+C_Cond+C_pH+C_Depth+plot_layout(ncol=2)
+```
+When testing variables "N", "Cond", "pH", and "Depth" with Cleveland plots we can observe what looks ot be an outliar most easily in the depth plot. The data point appears to be the furthest from the next closest data point in this plot. Numerically the distance would be greatest between points in Cond but since the range of data is wider than the Depth variable data range I dont think it would have a comparable outliar.
+
+# Observing 3 variables with histograms
+
+Variables "Nt", "Phos" and "Flow" will be observed with histograms with the dummy variable row_order.
+```{r}
+chg1 <- crabb %>%
+  ggplot()+
+  geom_histogram(aes(x=Nt),
+                 binwidth=0.001,
+                 closed="right",
+                 color="black")
+chg1
+
+chg2 <- crabb %>%
+  ggplot()+
+  geom_histogram(aes(x=Phos),
+                 binwidth=0.01,
+                 closed="right",
+                 color="black")
+chg2
+
+chg3 <- crabb %>%
+  ggplot()+
+  geom_histogram(aes(x=Flow),
+                 binwidth=0.02,
+                 closed="right",
+                 color="black")
+chg3
+```
+After running these histograms, it would appear phos has the furthest outliar. I tried to mess with the binwidth on Nt to reveal its outliar but it doesnt seem to be apparent here.
+
+# Creating desnity plots using the same variables as above
+
+Density plots for "Phos", "Nt", and "Flow"
+
+```{r}
+#Nt
+cdp1 <- crabb %>%
+  ggplot()+
+  geom_density(aes(x=Nt),
+               binwidth=0.01,
+               color="black",
+               fill="blue",
+               alpha=0.3)
+cdp1
+
+#Phos
+cdp2 <- crabb %>%
+  ggplot()+
+  geom_density(aes(x=Phos),
+               binwidth=0.01,
+               color="black",
+               fill="maroon",
+               alpha=0.3)
+cdp2
+
+#Flow
+cdp3 <- crabb %>%
+  ggplot()+
+  geom_density(aes(x=Flow),
+               binwidth=0.01,
+               color="black",
+               fill="orange",
+               alpha=0.3)
+cdp3
+```
+The desnity plots also seem to support phos having the furthest outliar. There are no cluster of points near the outliar for Phos but for Nt there appears to be multiple data points closer to what I percieved to be its furthest outliar based on the boxplots.
+
+# Pathworking the histograms and density plots tother
+
+```{r}
+chg1+cdp1+chg2+cdp2+chg3+cdp3+plot_layout(ncol=2)
+```
+Like I stated in the above plots in both cases (histogram and desnity) the variable with the furhtest/greatest outliar is "Phos".
+
+# ggpairs
+
+ggpairs for crabb data
+
+```{r}
+ggc <- ggpairs(crabb)
+
+ggc
+```
+The histograms appear to be the most useful to me in identifying where the outliars are. This grid of various plots still appears to show "Phos" as having the furthest outliar from the rest of the respective data in comparison to all the other variables and their outliars.
+
+# A closer look at 3 variables with ggpairs
+
+just for fun but wanted to see the 3 variables "phos", "Nt", and "Flow" ran through ggpairs
+
+```{r}
+ggpc3v <- crabb %>%
+  select(Phos,Nt,Flow) %>%
+  ggpairs()
+
+ggpc3v
+```
 
