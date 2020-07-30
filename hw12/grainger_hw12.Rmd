@@ -7,3 +7,94 @@ editor_options:
   chunk_output_type: inline
 ---
 
+### Libraries
+```{r}
+library(tidyverse)
+library(here)
+library(lubridate)
+library(nycflights13)
+```
+
+### Part 1: Play Date
+
+Notes directly from the homework with the addition of my date of birth
+```{r}
+birth_date <- "1995/08/01"
+
+# Elizabeth Garret Anderson was the first female physician
+anderson <- "9 June 1836"
+
+# Mary Anning discovered the first complete Plesiosaur fossil, 
+# and other important Jurassic fossils
+anning <- "1799/05/21"
+
+# Alice Augusta Ball was a chemist who developed the
+# first injectable treatment for leprosy.
+ball <- "July 24, 1892"
+
+# Sylvia Earle was the first chieft scientist at NOAA
+earle <- "August, 30 (1935)"
+
+# Rosalind Franklin used x-ray diffraction to 
+# discover DNA structure. Watson and Crick claimed credit.
+franklin <- "25th of July, 1920"
+
+# Ester Lederberg was the first to discover that viruses 
+# infect bacteria. Led to discovery of lambda bacteriophage
+lederberg <- "December 18, 1922"
+
+# Barbara McClintock discovered transposable elements (jumping genes),
+# and developed staining techniques to study chromosomes
+mcclintock <- "16061902"
+
+# Let's also remember a dream
+mlk_birth <- "1/15/29"
+mlk_dream <- "1963 August 28"
+```
+
+# 1
+Converting the above dates into POSIXct format with the lubridate functions.
+```{r}
+#Grainger
+(birth_date2 <- ymd(birth_date))
+
+#Anderson
+(anderson2 <- dmy(anderson))
+
+#Anning
+(anning2 <- ymd(anning))
+
+#Ball
+(ball2 <- mdy(ball))
+
+#Earle
+(earle2 <- mdy(earle))
+
+#Franklin
+(franklin2 <- dmy(franklin))
+
+#Lederberg
+(lederberg2 <- mdy(lederberg))
+
+#McClintlock
+(mcclintlock2 <- ydm(mcclintock))
+
+#MLK
+(mlk_birth2 <- mdy(mlk_birth))
+(mlk_dream2 <- ymd(mlk_dream))
+
+```
+# 2
+The dates appear to have printed correctly
+
+# 3
+
+Using lubridate to show the day of the week of my date or birth. function set to display the full name of the day
+```{r}
+(wday(birth_date2,,label=TRUE,abbr=FALSE))
+```
+
+
+
+
+
