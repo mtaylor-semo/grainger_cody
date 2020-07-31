@@ -85,7 +85,7 @@ Converting the above dates into POSIXct format with the lubridate functions.
 
 ```
 # 2
-The dates appear to have printed correctly
+The dates appear to have printed in the correct format
 
 # 3
 
@@ -94,7 +94,89 @@ Using lubridate to show the day of the week of my date or birth. function set to
 (wday(birth_date2,,label=TRUE,abbr=FALSE))
 ```
 
+# 4
+
+Using lubridate to update() the year value for my date of birth and setting it to 2020. wday is used to see what day of the week my birthday is. wday is set to show the full name for the day.
+```{r}
+birth_date3 <- update(birth_date2, year = 2020)
+(wday(birth_date3,,label=TRUE,abbr=FALSE))
+```
+
+# 5
+
+assigning the date of my birthday in the year 2525 to a variable and using ymd() on that value and storing it in a new variable. wday is used on the final value to get the full name of the day.
+```{r}
+birthdate_in_2525 <- "2525/08/01"
+birthdate_in_2525_2 <- ymd(birthdate_in_2525)
+(wday(birthdate_in_2525_2,,label=TRUE,abbr=FALSE))
+```
+
+# 6
+subrtracting the variable "anderson2" from "ball2". The result is given in time difference of days.
+```{r}
+ball2 - anderson2
+```
+
+#7
+
+Finding the duration between Martin Luther King Jr.'s birthday and I had a dream speech using the as.duration() funtion.
+```{r}
+mlk3 <- mlk_birth2 - mlk_dream2
+as.duration(mlk3)
+```
+
+A List of all the birthdates in a variable with assigned names.
+
+```{r}
+(bd_order <- c(birth_date2,anderson2,anning2,ball2,earle2,franklin2,lederberg2,mcclintlock2,mlk_birth2))
+
+bd_names <- c("Grainger","Anderson","Anning","Ball","Earle","Franklin","Lederberg","McClintlock","King")
+
+bd_order2 <- names(bd_order) <- bd_names
+bd_order2
+
+bd_order + dyears(1)
+```
 
 
 
+
+
+### Part 2: Wrangling and plotting with dates
+
+## Lake Ice
+
+
+Importing "lake_ice.csv"
+set missing values as "-999"
+
+The data is filtered to only show lake mendota. from the remaining data iceon_year,iceon_month,iceon_day,iceoff_year,iceoff_month,iceoff_day is selected with select(). Columns ice_on and ice_off are added with mutate() and the use of make_date(). the column duration is added with mutate() and has the numeric difference in days between ice_off and ice_on. A line graph is created to display the results with some modification to the labels.
+```{r}
+(lake_ice_raw <- read_csv(here("data","lake_ice.csv"), na = "-999"))
+
+(lake_medota <- filter(lake_ice_raw, lakecode == "DMR1"))
+
+(DMR1s <- select(lake_medota, iceon_year,iceon_month,iceon_day,iceoff_year,iceoff_month,iceoff_day))
+
+(DMR1s2 <- DMR1s %>%
+  mutate(
+    ice_on = make_date(year=iceon_year,month=iceon_month,day=iceon_day),
+    ice_off = make_date(year=iceoff_year,month=iceoff_month,day=iceoff_day),
+    duration = as.numeric(ice_off - ice_on)))
+
+DMR1s2 %>%
+  ggplot(aes(x=iceoff_year,y=duration, na.rm=TRUE)) +
+  geom_line()+
+  labs(x="Year", y="Ice Duration (days)")
+```
+
+
+
+## Soil Carbon Dioxide
+
+
+Importing the soil carbon dioxide data
+```{r}
+(soil_co2_raw <- read_tsv(here("data","soil_co2.txt")))
+```
 
