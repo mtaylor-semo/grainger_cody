@@ -131,17 +131,26 @@ ants2
 
 ```{r}
 flowers_raw <- read_csv(here("data","flower_size.csv"))
-flowers_raw
 
 flowers_raw %>%
   drop_na("Flower number")
 
-flowers <- select(flowers_raw, "Species", "Corolla length (cm)", "Corolla width throat (cm)")
+flowers <- select(flowers_raw, "Species", "Corolla length (cm)", "Corolla width throat (cm)") %>%
+  rename("cor_length"="Corolla length (cm)",
+         "cor_width"="Corolla width throat (cm)") %>%
+  drop_na()
 
 (flowers <- flowers %>%
   separate(Species,
-           into=c("Genus","species"),
+           into=c("genus","species"),
            sep=" "))
+
+flowers %>%
+  group_by(genus,species) %>%
+  summarise(mean_length=mean(cor_length),
+            mean_width=mean(cor_width),
+            max_length=max(cor_length),
+            max_width=max(cor_width))
 ```
 
 #### Part 4
