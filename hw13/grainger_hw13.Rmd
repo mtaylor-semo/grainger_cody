@@ -128,7 +128,7 @@ ants2
 
 #### Part 3
 
-
+Importing the data "flower_size.csv" and wrangling the data to remove na. columns "Species", "Corolla length (cm)", "Corolla width throat (cm)" are selected for and summarise is used to create new columns.
 ```{r}
 flowers_raw <- read_csv(here("data","flower_size.csv"))
 
@@ -152,5 +152,25 @@ flowers %>%
             max_length=max(cor_length),
             max_width=max(cor_width))
 ```
+
+Adding the second data set for this part.
+```{r}
+pollinators_raw <- read_csv(here("data","flower_pollinators.csv"))
+
+pollinators <- pollinators_raw %>%
+  select(Species,Color,Pollinator) %>%
+  rename("color"="Color",
+         "pollinator"="Pollinator") %>%
+
+  drop_na()
+
+(pollinators <- pollinators %>%
+  separate(Species,
+           into=c("genus","species"),
+           sep=" "))
+```
+
+Joining the two data sets
+
 
 #### Part 4
