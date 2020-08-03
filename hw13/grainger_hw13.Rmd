@@ -177,6 +177,10 @@ pollinators <- pollinators_raw %>%
 ```
 
 Joining the two data sets
+```{r}
+flowers %>%
+  inner_join(pollinators, by="species")
+```
 
 
 #### Part 4
