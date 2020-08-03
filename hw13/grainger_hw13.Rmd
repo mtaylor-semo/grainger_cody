@@ -32,3 +32,24 @@ beta <- str_replace_all(beta_raw, "\\s","")
 (beta_c <- str_c(beta,collapse=""))
 ```
 
+Setting the letters to uppercase and finding the string length
+```{r}
+#Setting the leters to capital
+
+(beta_c <- str_to_upper(beta_c))
+
+str_length(beta_c)
+
+```
+
+Detecting the number of start codon sequences with str_count(). Stop codons TGA and TAA are also displayed.
+```{r}
+#Count for ATG
+#Start codons
+str_count(beta_c,"ATG")
+
+#Count for TGA and TAA
+#Stop codons
+str_count(beta_c,"TGA|TAA")
+```
+
