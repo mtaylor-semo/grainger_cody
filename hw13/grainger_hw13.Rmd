@@ -168,6 +168,12 @@ pollinators <- pollinators_raw %>%
   separate(Species,
            into=c("genus","species"),
            sep=" "))
+
+(pollinators <- pollinators %>%
+  separate(pollinator,
+           into="syndrome",
+           sep=",| |;",
+           extra="drop"))
 ```
 
 Joining the two data sets
