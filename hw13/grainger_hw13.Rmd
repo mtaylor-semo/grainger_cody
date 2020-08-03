@@ -135,6 +135,13 @@ flowers_raw
 
 flowers_raw %>%
   drop_na("Flower number")
+
+flowers <- select(flowers_raw, "Species", "Corolla length (cm)", "Corolla width throat (cm)")
+
+(flowers <- flowers %>%
+  separate(Species,
+           into=c("Genus","species"),
+           sep=" "))
 ```
 
 #### Part 4
