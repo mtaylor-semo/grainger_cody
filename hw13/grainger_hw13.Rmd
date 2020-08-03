@@ -75,8 +75,11 @@ str_count(beta_c,caat_seq)
 (caat_seqs_all <- str_extract_all(beta_c, caat_seq,simplify=TRUE))
 #Length of the extracted sequence
 str_length(caat_seqs_all)
+
+
 #Divider
 "---------------------"
+
 "TATA"
 
 #TATA
@@ -101,3 +104,37 @@ str_length(promotor)
 
 
 #### Part 2: Ants
+
+importing the ants.csv data
+```{r}
+(ants_raw <- read_csv(here("data","ants.csv")))
+```
+
+Tidying the data using regex instead of hard coding all of the names.
+```{r}
+ants <- ants_raw %>%
+  pivot_longer(names_to = "species", values_to = "abundance", matches("[A-Z].[a-z]", ignore.case = FALSE))
+
+ants
+```
+
+Using mutate to change the species name into one that uses the first 4 digits of the genus and the first 4 of species.
+```{r}
+ants2 <- ants %>%
+  mutate(species = str_replace(species, "[A-Z].[a-z]", "([A-Z]{1})([a-z]{3})+"))
+
+ants2
+```
+
+#### Part 3
+
+
+```{r}
+flowers_raw <- read_csv(here("data","flower_size.csv"))
+flowers_raw
+
+flowers_raw %>%
+  is.na("Flower number")
+```
+
+#### Part 4
