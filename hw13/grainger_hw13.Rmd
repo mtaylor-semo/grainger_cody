@@ -17,12 +17,18 @@ library(gghighlight)
 
 #### Part 1: DNA of Strings
 
-Importing "beta_gliadin.txt" with read_lines() and skipping the first line.
+Importing "beta_gliadin.txt" with read_lines() and skipping the first line. str_replace_all() is used to remove the white spaces and numbers and the result is assigned to "beta". A new variable is created to store the collapsed version of "beta"
 ```{r}
+#Importing the raw data
 beta_raw <- read_lines(here("data","beta_gliadin.txt"),skip=1)
 
+#Removing blank spaces
 beta <- str_replace_all(beta_raw, "\\s","")
 
+#Removing numbers
 (beta <- str_replace_all(beta,"\\d",""))
+
+#using the collapse argument of str_c()
+(beta_c <- str_c(beta,collapse=""))
 ```
 
