@@ -121,7 +121,7 @@ ants
 Using mutate to change the species name into one that uses the first 4 digits of the genus and the first 4 of species.
 ```{r}
 ants2 <- ants %>%
-  mutate(species = str_replace(species, "[A-Z].[a-z]", "([A-Z]{1})([a-z]{3})+"))
+  mutate(species = str_replace(species, "[a-z].[a-z]", "[^A-Z]{1)+[a-z]{3}+"))
 
 ants2
 ```
@@ -134,7 +134,7 @@ flowers_raw <- read_csv(here("data","flower_size.csv"))
 flowers_raw
 
 flowers_raw %>%
-  is.na("Flower number")
+  drop_na("Flower number")
 ```
 
 #### Part 4
