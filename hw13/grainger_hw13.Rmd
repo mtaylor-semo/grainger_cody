@@ -137,20 +137,21 @@ flowers_raw %>%
 
 flowers <- select(flowers_raw, "Species", "Corolla length (cm)", "Corolla width throat (cm)") %>%
   rename("cor_length"="Corolla length (cm)",
-         "cor_width"="Corolla width throat (cm)") %>%
+         "cor_width"="Corolla width throat (cm)",
+         "species"="Species") %>%
   drop_na()
 
-(flowers <- flowers %>%
-  separate(Species,
+flowers <- flowers %>%
+  separate(species,
            into=c("genus","species"),
-           sep=" "))
+           sep=" ")
 
-flowers %>%
+(flowers <- flowers %>%
   group_by(genus,species) %>%
   summarise(mean_length=mean(cor_length),
             mean_width=mean(cor_width),
             max_length=max(cor_length),
-            max_width=max(cor_width))
+            max_width=max(cor_width)))
 ```
 
 Adding the second data set for this part.
@@ -176,10 +177,20 @@ pollinators <- pollinators_raw %>%
            extra="drop"))
 ```
 
-Joining the two data sets
+Joining the two data sets. Joined by "species"
 ```{r}
-flowers %>%
-  inner_join(pollinators, by="species")
+(phlox <- flowers %>%
+  inner_join(pollinators, by="species"))
+```
+
+Creating a scateerplot of the new data
+```{r}
+phlox %>%
+  ggplot(mapping=aes(x=mean_length,y=mean_width,color=syndrome))+
+  geom_point()
+
+phlox <- phlox %>%
+  mutate(species = str_replace_all(syndrome, c("bees"="bee","beetles"="beetle")))
 ```
 
 
