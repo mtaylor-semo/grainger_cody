@@ -1,0 +1,28 @@
+---
+title: "HW_13"
+author: "Cody Grainger"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+### Libraries
+```{r}
+library(tidyverse)
+library(here)
+library(ggthemes)
+library(gghighlight)
+```
+
+#### Part 1: DNA of Strings
+
+Importing "beta_gliadin.txt" with read_lines() and skipping the first line.
+```{r}
+beta_raw <- read_lines(here("data","beta_gliadin.txt"),skip=1)
+
+beta <- str_replace_all(beta_raw, "\\s","")
+
+(beta <- str_replace_all(beta,"\\d",""))
+```
+
