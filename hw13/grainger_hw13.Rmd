@@ -53,3 +53,51 @@ str_count(beta_c,"ATG")
 str_count(beta_c,"TGA|TAA")
 ```
 
+Creating variables CAAT_box and TATA_box and searching for them in the sequence
+```{r}
+CAAT_box <- "CCAAT"
+TATA_box <- "CTATTA"
+
+str_count(beta_c,CAAT_box)
+
+str_count(beta_c,TATA_box)
+```
+
+Creating regex search strings to seach for specific sequences that begin and end with "CCAAT","ATG" and "CTATAA","ATG". The found sequences are extracted and printed. Finding seq_length() as well.
+```{r}
+"CAAT"
+#CAAT
+#Assigning search string
+caat_seq <- "CCAAT.{100,150}ATG"
+#count for number of times this defined start and stop of sequence shows up
+str_count(beta_c,caat_seq)
+#Extracting the sequence
+(caat_seqs_all <- str_extract_all(beta_c, caat_seq,simplify=TRUE))
+#Length of the extracted sequence
+str_length(caat_seqs_all)
+#Divider
+"---------------------"
+"TATA"
+
+#TATA
+#Assigning search string
+tata_seq <- "CTATAA.{50,100}ATG"
+#count for number of times this defined start and stop of sequence shows up
+str_count(beta_c,tata_seq)
+#Extracting the sequence
+(tata_seq_all <- str_extract_all(beta_c, tata_seq,simplify=TRUE))
+#Length of the extracted sequence
+str_length(tata_seq_all)
+```
+Using str_which() to find which of the 2 CAAT sequences contains the TATA sequence. Assigning the correct result to a new variable.
+```{r}
+#Finding which caat sequence contains tata_seq
+str_which(caat_seqs_all,tata_seq)
+
+#Extracting the above sequence into a new variable
+(promotor <- str_extract(beta_c,caat_seq))
+str_length(promotor)
+```
+
+
+#### Part 2: Ants

@@ -1904,11 +1904,134 @@ beta &lt;- str_replace_all(beta_raw, &quot;\\s&quot;,&quot;&quot;)
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+<p>Creating variables CAAT_box and TATA_box and searching for them in the sequence</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuQ0FBVF9ib3ggPC0gXCJDQ0FBVFwiXG5UQVRBX2JveCA8LSBcIkNUQVRUQVwiXG5cbnN0cl9jb3VudChiZXRhX2MsQ0FBVF9ib3gpXG5gYGAifQ== -->
+<pre class="r"><code>CAAT_box &lt;- &quot;CCAAT&quot;
+TATA_box &lt;- &quot;CTATTA&quot;
+
+str_count(beta_c,CAAT_box)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDRcbiJ9 -->
+<pre><code>[1] 4</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3RyX2NvdW50KGJldGFfYyxUQVRBX2JveClcbmBgYCJ9 -->
+<pre class="r"><code>str_count(beta_c,TATA_box)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDFcbiJ9 -->
+<pre><code>[1] 1</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Creating regex search strings to seach for specific sequences that begin and end with “CCAAT”,“ATG” and “CTATAA”,“ATG”. The found sequences are extracted and printed. Finding seq_length() as well.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXCJDQUFUXCJcbmBgYCJ9 -->
+<pre class="r"><code>&quot;CAAT&quot;</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiQ0FBVFwiXG4ifQ== -->
+<pre><code>[1] &quot;CAAT&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI0NBQVRcbiNBc3NpZ25pbmcgc2VhcmNoIHN0cmluZ1xuY2FhdF9zZXEgPC0gXCJDQ0FBVC57MTAwLDE1MH1BVEdcIlxuI2NvdW50IGZvciBudW1iZXIgb2YgdGltZXMgdGhpcyBkZWZpbmVkIHN0YXJ0IGFuZCBzdG9wIG9mIHNlcXVlbmNlIHNob3dzIHVwXG5zdHJfY291bnQoYmV0YV9jLGNhYXRfc2VxKVxuYGBgIn0= -->
+<pre class="r"><code>#CAAT
+#Assigning search string
+caat_seq &lt;- &quot;CCAAT.{100,150}ATG&quot;
+#count for number of times this defined start and stop of sequence shows up
+str_count(beta_c,caat_seq)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDJcbiJ9 -->
+<pre><code>[1] 2</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI0V4dHJhY3RpbmcgdGhlIHNlcXVlbmNlXG4oY2FhdF9zZXFzX2FsbCA8LSBzdHJfZXh0cmFjdF9hbGwoYmV0YV9jLCBjYWF0X3NlcSxzaW1wbGlmeT1UUlVFKSlcbmBgYCJ9 -->
+<pre class="r"><code>#Extracting the sequence
+(caat_seqs_all &lt;- str_extract_all(beta_c, caat_seq,simplify=TRUE))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICBbLDFdICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcblsxLF0gXCJDQ0FBVFRHVEdBQUFHQUdBVENBVEdDQ0FUR0FDQUdDVEFUQUFBVEFHR0NDQ0dDQVRDR0FUR0FUR0FUQ0FUQ0NUVENDVENBVENDQVRDQVRUQ1RDQVRBQUdUQUdBR1RHQ0FUQ0FUVENBQUdHQ0FBR0NBQUdDQUdUR0dUQ0FBVEFDQUFBVENDQVRDQVRHXCJcbiAgICAgWywyXSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG5bMSxdIFwiQ0NBQVRUVENHQ0FHQ0FBQ0FBR0NBQ0FBQ0FBQ0FBQ0FBQ0FBQ0FBQ0FBQ0FBQ0FBQ0FBQ0FBQ0FBQ0FBQ0FBQ0FBQ0FBQ0FBQVRDQ1RUQ0FBQ0FBQVRUVFRHQ0FBQ0FBQ0FBQ1RHQVRUQ0NBVEdDQUdHR0FUR1RUR1RDVFRHQ0FBQ0FBQ0FDQUFDQVRBR0NHQ0FUR1wiXG4ifQ== -->
+<pre><code>     [,1]                                                                                                                                         
+[1,] &quot;CCAATTGTGAAAGAGATCATGCCATGACAGCTATAAATAGGCCCGCATCGATGATGATCATCCTTCCTCATCCATCATTCTCATAAGTAGAGTGCATCATTCAAGGCAAGCAAGCAGTGGTCAATACAAATCCATCATG&quot;
+     [,2]                                                                                                                                                  
+[1,] &quot;CCAATTTCGCAGCAACAAGCACAACAACAACAACAACAACAACAACAACAACAACAACAACAACAACAACAAATCCTTCAACAAATTTTGCAACAACAACTGATTCCATGCAGGGATGTTGTCTTGCAACAACACAACATAGCGCATG&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI0xlbmd0aCBvZiB0aGUgZXh0cmFjdGVkIHNlcXVlbmNlXG5zdHJfbGVuZ3RoKGNhYXRfc2Vxc19hbGwpXG5gYGAifQ== -->
+<pre class="r"><code>#Length of the extracted sequence
+str_length(caat_seqs_all)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDEzOSAxNDhcbiJ9 -->
+<pre><code>[1] 139 148</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI0RpdmlkZXJcblwiLS0tLS0tLS0tLS0tLS0tLS0tLS0tXCJcbmBgYCJ9 -->
+<pre class="r"><code>#Divider
+&quot;---------------------&quot;</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiLS0tLS0tLS0tLS0tLS0tLS0tLS0tXCJcbiJ9 -->
+<pre><code>[1] &quot;---------------------&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXCJUQVRBXCJcbmBgYCJ9 -->
+<pre class="r"><code>&quot;TATA&quot;</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiVEFUQVwiXG4ifQ== -->
+<pre><code>[1] &quot;TATA&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI1RBVEFcbiNBc3NpZ25pbmcgc2VhcmNoIHN0cmluZ1xudGF0YV9zZXEgPC0gXCJDVEFUQUEuezUwLDEwMH1BVEdcIlxuI2NvdW50IGZvciBudW1iZXIgb2YgdGltZXMgdGhpcyBkZWZpbmVkIHN0YXJ0IGFuZCBzdG9wIG9mIHNlcXVlbmNlIHNob3dzIHVwXG5zdHJfY291bnQoYmV0YV9jLHRhdGFfc2VxKVxuYGBgIn0= -->
+<pre class="r"><code>#TATA
+#Assigning search string
+tata_seq &lt;- &quot;CTATAA.{50,100}ATG&quot;
+#count for number of times this defined start and stop of sequence shows up
+str_count(beta_c,tata_seq)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDFcbiJ9 -->
+<pre><code>[1] 1</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI0V4dHJhY3RpbmcgdGhlIHNlcXVlbmNlXG4odGF0YV9zZXFfYWxsIDwtIHN0cl9leHRyYWN0X2FsbChiZXRhX2MsIHRhdGFfc2VxLHNpbXBsaWZ5PVRSVUUpKVxuYGBgIn0= -->
+<pre class="r"><code>#Extracting the sequence
+(tata_seq_all &lt;- str_extract_all(beta_c, tata_seq,simplify=TRUE))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICBbLDFdICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcblsxLF0gXCJDVEFUQUFBVEFHR0NDQ0dDQVRDR0FUR0FUR0FUQ0FUQ0NUVENDVENBVENDQVRDQVRUQ1RDQVRBQUdUQUdBR1RHQ0FUQ0FUVENBQUdHQ0FBR0NBQUdDQUdUR0dUQ0FBVEFDQUFBVENDQVRDQVRHXCJcbiJ9 -->
+<pre><code>     [,1]                                                                                                           
+[1,] &quot;CTATAAATAGGCCCGCATCGATGATGATCATCCTTCCTCATCCATCATTCTCATAAGTAGAGTGCATCATTCAAGGCAAGCAAGCAGTGGTCAATACAAATCCATCATG&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI0xlbmd0aCBvZiB0aGUgZXh0cmFjdGVkIHNlcXVlbmNlXG5zdHJfbGVuZ3RoKHRhdGFfc2VxX2FsbClcbmBgYCJ9 -->
+<pre class="r"><code>#Length of the extracted sequence
+str_length(tata_seq_all)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDEwOVxuIn0= -->
+<pre><code>[1] 109</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Using str_which() to find which of the 2 CAAT sequences contains the TATA sequence. Assigning the correct result to a new variable.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI0ZpbmRpbmcgd2hpY2ggY2FhdCBzZXF1ZW5jZSBjb250YWlucyB0YXRhX3NlcVxuc3RyX3doaWNoKGNhYXRfc2Vxc19hbGwsdGF0YV9zZXEpXG5gYGAifQ== -->
+<pre class="r"><code>#Finding which caat sequence contains tata_seq
+str_which(caat_seqs_all,tata_seq)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDFcbiJ9 -->
+<pre><code>[1] 1</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuKHByb21vdG9yIDwtIHN0cl9leHRyYWN0KGJldGFfYyxjYWF0X3NlcSkpXG5gYGAifQ== -->
+<pre class="r"><code>(promotor &lt;- str_extract(beta_c,caat_seq))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiQ0NBQVRUR1RHQUFBR0FHQVRDQVRHQ0NBVEdBQ0FHQ1RBVEFBQVRBR0dDQ0NHQ0FUQ0dBVEdBVEdBVENBVENDVFRDQ1RDQVRDQ0FUQ0FUVENUQ0FUQUFHVEFHQUdUR0NBVENBVFRDQUFHR0NBQUdDQUFHQ0FHVEdHVENBQVRBQ0FBQVRDQ0FUQ0FUR1wiXG4ifQ== -->
+<pre><code>[1] &quot;CCAATTGTGAAAGAGATCATGCCATGACAGCTATAAATAGGCCCGCATCGATGATGATCATCCTTCCTCATCCATCATTCTCATAAGTAGAGTGCATCATTCAAGGCAAGCAAGCAGTGGTCAATACAAATCCATCATG&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3RyX2xlbmd0aChwcm9tb3RvcilcbmBgYCJ9 -->
+<pre class="r"><code>str_length(promotor)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDEzOVxuIn0= -->
+<pre><code>[1] 139</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="part-2-ants" class="section level4">
+<h4>Part 2: Ants</h4>
 <!-- rnb-text-end -->
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkhXXzEzIg0KYXV0aG9yOiAiQ29keSBHcmFpbmdlciINCmRhdGU6ICJgciBmb3JtYXQoU3lzLnRpbWUoKSwgJyVkICVCICVZJylgIg0Kb3V0cHV0OiBodG1sX25vdGVib29rDQplZGl0b3Jfb3B0aW9uczogDQogIGNodW5rX291dHB1dF90eXBlOiBpbmxpbmUNCi0tLQ0KDQojIyMgTGlicmFyaWVzDQpgYGB7cn0NCmxpYnJhcnkodGlkeXZlcnNlKQ0KbGlicmFyeShoZXJlKQ0KbGlicmFyeShnZ3RoZW1lcykNCmxpYnJhcnkoZ2doaWdobGlnaHQpDQpgYGANCg0KIyMjIyBQYXJ0IDE6IEROQSBvZiBTdHJpbmdzDQoNCkltcG9ydGluZyAiYmV0YV9nbGlhZGluLnR4dCIgd2l0aCByZWFkX2xpbmVzKCkgYW5kIHNraXBwaW5nIHRoZSBmaXJzdCBsaW5lLiBzdHJfcmVwbGFjZV9hbGwoKSBpcyB1c2VkIHRvIHJlbW92ZSB0aGUgd2hpdGUgc3BhY2VzIGFuZCBudW1iZXJzIGFuZCB0aGUgcmVzdWx0IGlzIGFzc2lnbmVkIHRvICJiZXRhIi4gQSBuZXcgdmFyaWFibGUgaXMgY3JlYXRlZCB0byBzdG9yZSB0aGUgY29sbGFwc2VkIHZlcnNpb24gb2YgImJldGEiDQpgYGB7cn0NCiNJbXBvcnRpbmcgdGhlIHJhdyBkYXRhDQpiZXRhX3JhdyA8LSByZWFkX2xpbmVzKGhlcmUoImRhdGEiLCJiZXRhX2dsaWFkaW4udHh0Iiksc2tpcD0xKQ0KDQojUmVtb3ZpbmcgYmxhbmsgc3BhY2VzDQpiZXRhIDwtIHN0cl9yZXBsYWNlX2FsbChiZXRhX3JhdywgIlxccyIsIiIpDQoNCiNSZW1vdmluZyBudW1iZXJzDQooYmV0YSA8LSBzdHJfcmVwbGFjZV9hbGwoYmV0YSwiXFxkIiwiIikpDQoNCiN1c2luZyB0aGUgY29sbGFwc2UgYXJndW1lbnQgb2Ygc3RyX2MoKQ0KKGJldGFfYyA8LSBzdHJfYyhiZXRhLGNvbGxhcHNlPSIiKSkNCmBgYA0KDQpTZXR0aW5nIHRoZSBsZXR0ZXJzIHRvIHVwcGVyY2FzZSBhbmQgZmluZGluZyB0aGUgc3RyaW5nIGxlbmd0aA0KYGBge3J9DQojU2V0dGluZyB0aGUgbGV0ZXJzIHRvIGNhcGl0YWwNCg0KKGJldGFfYyA8LSBzdHJfdG9fdXBwZXIoYmV0YV9jKSkNCg0Kc3RyX2xlbmd0aChiZXRhX2MpDQoNCmBgYA0KDQpEZXRlY3RpbmcgdGhlIG51bWJlciBvZiBzdGFydCBjb2RvbiBzZXF1ZW5jZXMgd2l0aCBzdHJfY291bnQoKS4gU3RvcCBjb2RvbnMgVEdBIGFuZCBUQUEgYXJlIGFsc28gZGlzcGxheWVkLg0KYGBge3J9DQojQ291bnQgZm9yIEFURw0KI1N0YXJ0IGNvZG9ucw0Kc3RyX2NvdW50KGJldGFfYywiQVRHIikNCg0KI0NvdW50IGZvciBUR0EgYW5kIFRBQQ0KI1N0b3AgY29kb25zDQpzdHJfY291bnQoYmV0YV9jLCJUR0F8VEFBIikNCmBgYA0KDQo=</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkhXXzEzIg0KYXV0aG9yOiAiQ29keSBHcmFpbmdlciINCmRhdGU6ICJgciBmb3JtYXQoU3lzLnRpbWUoKSwgJyVkICVCICVZJylgIg0Kb3V0cHV0OiBodG1sX25vdGVib29rDQplZGl0b3Jfb3B0aW9uczogDQogIGNodW5rX291dHB1dF90eXBlOiBpbmxpbmUNCi0tLQ0KDQojIyMgTGlicmFyaWVzDQpgYGB7cn0NCmxpYnJhcnkodGlkeXZlcnNlKQ0KbGlicmFyeShoZXJlKQ0KbGlicmFyeShnZ3RoZW1lcykNCmxpYnJhcnkoZ2doaWdobGlnaHQpDQpgYGANCg0KIyMjIyBQYXJ0IDE6IEROQSBvZiBTdHJpbmdzDQoNCkltcG9ydGluZyAiYmV0YV9nbGlhZGluLnR4dCIgd2l0aCByZWFkX2xpbmVzKCkgYW5kIHNraXBwaW5nIHRoZSBmaXJzdCBsaW5lLiBzdHJfcmVwbGFjZV9hbGwoKSBpcyB1c2VkIHRvIHJlbW92ZSB0aGUgd2hpdGUgc3BhY2VzIGFuZCBudW1iZXJzIGFuZCB0aGUgcmVzdWx0IGlzIGFzc2lnbmVkIHRvICJiZXRhIi4gQSBuZXcgdmFyaWFibGUgaXMgY3JlYXRlZCB0byBzdG9yZSB0aGUgY29sbGFwc2VkIHZlcnNpb24gb2YgImJldGEiDQpgYGB7cn0NCiNJbXBvcnRpbmcgdGhlIHJhdyBkYXRhDQpiZXRhX3JhdyA8LSByZWFkX2xpbmVzKGhlcmUoImRhdGEiLCJiZXRhX2dsaWFkaW4udHh0Iiksc2tpcD0xKQ0KDQojUmVtb3ZpbmcgYmxhbmsgc3BhY2VzDQpiZXRhIDwtIHN0cl9yZXBsYWNlX2FsbChiZXRhX3JhdywgIlxccyIsIiIpDQoNCiNSZW1vdmluZyBudW1iZXJzDQooYmV0YSA8LSBzdHJfcmVwbGFjZV9hbGwoYmV0YSwiXFxkIiwiIikpDQoNCiN1c2luZyB0aGUgY29sbGFwc2UgYXJndW1lbnQgb2Ygc3RyX2MoKQ0KKGJldGFfYyA8LSBzdHJfYyhiZXRhLGNvbGxhcHNlPSIiKSkNCmBgYA0KDQpTZXR0aW5nIHRoZSBsZXR0ZXJzIHRvIHVwcGVyY2FzZSBhbmQgZmluZGluZyB0aGUgc3RyaW5nIGxlbmd0aA0KYGBge3J9DQojU2V0dGluZyB0aGUgbGV0ZXJzIHRvIGNhcGl0YWwNCg0KKGJldGFfYyA8LSBzdHJfdG9fdXBwZXIoYmV0YV9jKSkNCg0Kc3RyX2xlbmd0aChiZXRhX2MpDQoNCmBgYA0KDQpEZXRlY3RpbmcgdGhlIG51bWJlciBvZiBzdGFydCBjb2RvbiBzZXF1ZW5jZXMgd2l0aCBzdHJfY291bnQoKS4gU3RvcCBjb2RvbnMgVEdBIGFuZCBUQUEgYXJlIGFsc28gZGlzcGxheWVkLg0KYGBge3J9DQojQ291bnQgZm9yIEFURw0KI1N0YXJ0IGNvZG9ucw0Kc3RyX2NvdW50KGJldGFfYywiQVRHIikNCg0KI0NvdW50IGZvciBUR0EgYW5kIFRBQQ0KI1N0b3AgY29kb25zDQpzdHJfY291bnQoYmV0YV9jLCJUR0F8VEFBIikNCmBgYA0KDQpDcmVhdGluZyB2YXJpYWJsZXMgQ0FBVF9ib3ggYW5kIFRBVEFfYm94IGFuZCBzZWFyY2hpbmcgZm9yIHRoZW0gaW4gdGhlIHNlcXVlbmNlDQpgYGB7cn0NCkNBQVRfYm94IDwtICJDQ0FBVCINClRBVEFfYm94IDwtICJDVEFUVEEiDQoNCnN0cl9jb3VudChiZXRhX2MsQ0FBVF9ib3gpDQoNCnN0cl9jb3VudChiZXRhX2MsVEFUQV9ib3gpDQpgYGANCg0KQ3JlYXRpbmcgcmVnZXggc2VhcmNoIHN0cmluZ3MgdG8gc2VhY2ggZm9yIHNwZWNpZmljIHNlcXVlbmNlcyB0aGF0IGJlZ2luIGFuZCBlbmQgd2l0aCAiQ0NBQVQiLCJBVEciIGFuZCAiQ1RBVEFBIiwiQVRHIi4gVGhlIGZvdW5kIHNlcXVlbmNlcyBhcmUgZXh0cmFjdGVkIGFuZCBwcmludGVkLiBGaW5kaW5nIHNlcV9sZW5ndGgoKSBhcyB3ZWxsLg0KYGBge3J9DQoiQ0FBVCINCiNDQUFUDQojQXNzaWduaW5nIHNlYXJjaCBzdHJpbmcNCmNhYXRfc2VxIDwtICJDQ0FBVC57MTAwLDE1MH1BVEciDQojY291bnQgZm9yIG51bWJlciBvZiB0aW1lcyB0aGlzIGRlZmluZWQgc3RhcnQgYW5kIHN0b3Agb2Ygc2VxdWVuY2Ugc2hvd3MgdXANCnN0cl9jb3VudChiZXRhX2MsY2FhdF9zZXEpDQojRXh0cmFjdGluZyB0aGUgc2VxdWVuY2UNCihjYWF0X3NlcXNfYWxsIDwtIHN0cl9leHRyYWN0X2FsbChiZXRhX2MsIGNhYXRfc2VxLHNpbXBsaWZ5PVRSVUUpKQ0KI0xlbmd0aCBvZiB0aGUgZXh0cmFjdGVkIHNlcXVlbmNlDQpzdHJfbGVuZ3RoKGNhYXRfc2Vxc19hbGwpDQojRGl2aWRlcg0KIi0tLS0tLS0tLS0tLS0tLS0tLS0tLSINCiJUQVRBIg0KDQojVEFUQQ0KI0Fzc2lnbmluZyBzZWFyY2ggc3RyaW5nDQp0YXRhX3NlcSA8LSAiQ1RBVEFBLns1MCwxMDB9QVRHIg0KI2NvdW50IGZvciBudW1iZXIgb2YgdGltZXMgdGhpcyBkZWZpbmVkIHN0YXJ0IGFuZCBzdG9wIG9mIHNlcXVlbmNlIHNob3dzIHVwDQpzdHJfY291bnQoYmV0YV9jLHRhdGFfc2VxKQ0KI0V4dHJhY3RpbmcgdGhlIHNlcXVlbmNlDQoodGF0YV9zZXFfYWxsIDwtIHN0cl9leHRyYWN0X2FsbChiZXRhX2MsIHRhdGFfc2VxLHNpbXBsaWZ5PVRSVUUpKQ0KI0xlbmd0aCBvZiB0aGUgZXh0cmFjdGVkIHNlcXVlbmNlDQpzdHJfbGVuZ3RoKHRhdGFfc2VxX2FsbCkNCmBgYA0KVXNpbmcgc3RyX3doaWNoKCkgdG8gZmluZCB3aGljaCBvZiB0aGUgMiBDQUFUIHNlcXVlbmNlcyBjb250YWlucyB0aGUgVEFUQSBzZXF1ZW5jZS4gQXNzaWduaW5nIHRoZSBjb3JyZWN0IHJlc3VsdCB0byBhIG5ldyB2YXJpYWJsZS4NCmBgYHtyfQ0KI0ZpbmRpbmcgd2hpY2ggY2FhdCBzZXF1ZW5jZSBjb250YWlucyB0YXRhX3NlcQ0Kc3RyX3doaWNoKGNhYXRfc2Vxc19hbGwsdGF0YV9zZXEpDQoNCiNFeHRyYWN0aW5nIHRoZSBhYm92ZSBzZXF1ZW5jZSBpbnRvIGEgbmV3IHZhcmlhYmxlDQoocHJvbW90b3IgPC0gc3RyX2V4dHJhY3QoYmV0YV9jLGNhYXRfc2VxKSkNCnN0cl9sZW5ndGgocHJvbW90b3IpDQpgYGANCg0KDQojIyMjIFBhcnQgMjogQW50cw0K</div>
 
 
 
