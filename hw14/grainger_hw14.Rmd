@@ -138,3 +138,50 @@ using the patchwork package to set the us map and missouri map side by side. wid
 us_map + mo_map + plot_layout(ncol=2,widths=c(1.5,1))
 ```
 
+##Outline maps: your turn
+
+California is filled in black on the us_map. San Diego county will be filled in black and Glenn and Contra Costa counties will be shaded gray. the maps are put side by side with patchwork. patchwork width set to 1.8
+```{r}
+# Outline of the 48 contiguous states
+usa <- map_data(map="state")
+
+# Outline of just California
+us_california <- map_data(map="state",
+                        region="california")
+
+
+us_map <- ggplot()+
+  geom_polygon(data=us_california,
+               aes(x=long,y=lat,
+                   group=group),
+               fill="black") +
+  geom_polygon(data=usa,
+               aes(x=long,y=lat,
+                   group=group),
+               fill=NA,
+               color="black") +
+  theme_map() +
+  coord_fixed(1.3)
+
+us_map
+
+california <- map_data("county","california")
+ca_san_diego <- subset(california, subregion %in% c("san diego"))
+ca_other <- subset(california, subregion %in% c("glenn","contra costa"))
+  
+ca_map <- ggplot() +
+  geom_polygon(data=california,aes(x=long,y=lat,group=group),fill=NA,color="black") +
+  geom_polygon(data=ca_san_diego,aes(x=long,y=lat,group=group),fill="black") +
+  geom_polygon(data=ca_other,aes(x=long,y=lat,group=group),fill="grey") +
+  theme_map() +
+  coord_fixed(1.3)
+
+ca_map
+
+us_map + ca_map + plot_layout(ncol=2,widths=c(1.8,1))
+```
+
+#
+
+#### Part 2: Choropleth maps
+
