@@ -185,3 +185,160 @@ us_map + ca_map + plot_layout(ncol=2,widths=c(1.8,1))
 
 #### Part 2: Choropleth maps
 
+# Example
+
+skin cancer mortality in the US
+
+importing data using read_delim()
+```{r}
+skin_cancer_raw <- read_delim(file=here::here("data","skin_cancer.txt"), 
+             delim=" ", 
+             skip=7, 
+             trim_ws=TRUE)
+
+skin_cancer_raw
+```
+
+Wrangling the data to put spaces in state names and correct a typo
+```{r}
+#removing spaces and correcting MewYork to New York
+skin_cancer <- skin_cancer_raw %>% 
+  filter(State!="Wash,D.C.") %>% 
+  mutate(State=case_when(
+    State=="NorthCarolina" ~ "North Carolina",
+    State=="SouthCarolina" ~ "South Carolina",
+    State=="NorthDakota" ~ "North Dakota",
+    State=="SouthDakota" ~ "South Dakota",
+    State=="NewHampshire" ~ "New Hampshire",
+    State=="NewJersey" ~ "New Jersey",
+    State=="NewMexico" ~ "New Mexico",
+    State=="MewYork" ~ "New York", 
+    State=="RhodeIsland" ~ "Rhode Island",
+    State=="WestVirginia" ~ "West Virginia",
+    TRUE ~ State))
+```
+
+Calculating the mean mortality for the 48 mainland states (mean_mort). Mutate is used to add a relative_mort column subtracting the mort column from mean_mort
+```{r}
+# Finding the mean_mort value
+mean_mort <- mean(skin_cancer$Mort)
+
+# using the new value to create a new columns with mutate
+skin_cancer_adj <- skin_cancer %>% 
+  mutate(relative_mort=Mort - mean_mort)
+```
+
+Removing Hawaii, Alaska, the District of Columbia, and US territories from our shapefile.
+```{r}
+lower_48 <- c("Alabama","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Carolina","North Dakota","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming")
+```
+
+reading the shapefile with st_read. Filter is used so we only get the 48 states.
+```{r}
+states <- st_read(here::here("data", "cb_2017_us_state_500k.shp"),
+                  stringsAsFactors=TRUE)
+#lower 48
+states_df <- states %>%
+  dplyr::filter(NAME %in% lower_48)
+```
+
+Assigning levels to the states with state FIPS data
+```{r}
+# Capture the FIPS levels from states_df
+# Use to factor the FIPS and state names in the next step.
+state_levels <- levels(states_df$STATEFP)
+name_levels <- levels(states_df$NAME)
+```
+
+Using mutate() to change 'STATEFP' to an unordered factor
+```{r}
+library(tidyverse)
+fips <- read_csv(here::here("data","state_fips.csv")) %>% 
+  dplyr::select(-abbr) %>% 
+  rename(STATEFP=FIPS) %>% 
+  mutate(STATEFP=factor(STATEFP,levels=state_levels))
+```
+
+Using left join() to merge data into a single file
+```{r}
+skin_cancer_adj <- left_join(skin_cancer_adj, fips)
+
+states_df <- left_join(states_df, skin_cancer_adj)
+```
+
+plotting with grom_sf. coord_sf() will warp the plot to mimic the Earth curvature for theme_bw(). theme(legend.position="bottom")
+```{r}
+ggplot(states_df) +
+  geom_sf(aes(fill=relative_mort)) +
+  scale_fill_viridis_c(name="Skin Cancer,\nRelative Mortality",
+                       option="inferno") +
+  coord_sf(crs=st_crs(5070)) +
+  theme_bw() +
+  theme(legend.position="bottom")
+```
+
+## Choropleth map
+
+Importing data
+```{r}
+(lyme_raw <- read_csv(file=here::here("data","lyme_disease.csv"),
+         comment = "Lyme Disease number cases",
+         na="-"))
+
+lyme <- lyme_raw %>%
+  mutate(2017=2017_Confirmed + 2017_Probable)
+```
+
+#### Part 3: Dot distriution maps
+
+# Example
+
+libraries for this section. the order matters
+```{r}
+library(raster)
+library(tidyverse)
+library(ggthemes)
+library(ggmap)
+```
+
+setting values for long and lat and setting a seed
+```{r}
+# Global vars -------------------------------------------------------------
+
+# Restrict the map to the western US.
+min_long <- -126
+max_long <- -104
+min_lat <-   31
+max_lat <-   50
+
+set.seed(9618973)
+```
+
+loading the bigfoot data and adding the parameters set above
+```{r}
+bigfoot_raw <- read_csv(file=here::here("data","bigfoot.csv"))
+
+bigfoot_raw 
+
+bigfoot <- bigfoot_raw %>% 
+  filter(long >= min_long & long <= max_long,
+         lat >= min_lat & lat <= max_lat) %>% 
+  sample_n(300) %>% 
+  mutate(name="Gigantopithecus") %>% 
+  dplyr::select(name,long,lat)
+
+bigfoot
+```
+
+Adding the bears data set. both sets are bound together by row. head() and tail() are used to show the data merged successfully
+```{r}
+
+bears <- read_csv(file=here::here("data", "bears.csv"))
+
+bears
+
+both_species <- bind_rows(bigfoot, bears)
+
+head(both_species)
+tail(both_species)
+```
