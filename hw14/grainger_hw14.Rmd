@@ -1,0 +1,49 @@
+---
+title: "HW_13"
+author: "Cody Grainger"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+### Libraries
+
+Initial libraries
+```{r}
+library(here)
+library(raster)
+library(sf)
+library(tidyverse)
+library(ggthemes)
+library(patchwork)
+library(maptools)
+library(ggmap)
+library(marmap)
+
+```
+
+#### Part 1: Outline maps
+
+### Notes
+
+The end product for this section is a U.S. map with missouri filled in black and 3 other states filled in gray.
+
+packages 'map_data' and 'subset' are used to access specific regions (states)
+
+```{r}
+# Outline of the 48 contiguous states
+usa <- map_data(map="state")
+
+# Outline of just Missouri
+us_missouri <- map_data(map="state",
+                        region="missouri")
+
+# Outline of Alabama, Florida, Mississippe, and North Carolina
+us_other <- subset(x=usa,
+                   subset=region %in% c("alabama",
+                                        "florida",
+                                        "mississippi",
+                                        "north caolina"))
+```
+
