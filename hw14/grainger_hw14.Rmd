@@ -286,7 +286,9 @@ Importing data
          na="-"))
 
 lyme <- lyme_raw %>%
-  mutate(2017=2017_Confirmed + 2017_Probable)
+  mutate(2017 = 2017_Confirmed + 2017_Probable)
+
+
 ```
 
 #### Part 3: Dot distriution maps
