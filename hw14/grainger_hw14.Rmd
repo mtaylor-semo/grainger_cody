@@ -342,3 +342,121 @@ both_species <- bind_rows(bigfoot, bears)
 head(both_species)
 tail(both_species)
 ```
+
+For plotting the data points a terrain map will be used. below the initial map is set up. the lat and lon veriables above will define th section of map and zoom will get a closer look.
+```{r}
+base <- get_stamenmap(bbox=c(min_long,
+                             min_lat, 
+                             max_long, 
+                             max_lat),
+                     zoom=4, 
+                     maptype="terrain-background")
+
+ggmap(base)
+```
+
+Using the above map but adding in the bigfoot data
+```{r}
+base <- ggmap(base)
+
+base + geom_point(data=bigfoot,
+                  aes(x=long,
+                      y=lat))
+```
+
+The plot below will examine the bears ata on the same plot
+```{r}
+base + geom_point(data=bears,
+                  aes(x=long,
+                      y=lat))
+```
+
+Just by looking at bears and bigfoot sighings on the plots I can already see a correllation between the "sightings" of each. The densities of points on both plots seem to be.
+
+Below both data sets are added and distinguished by shape and fill color
+```{r}
+base + geom_point(data=both_species,
+                  aes(x=long,
+                      y=lat,
+                      shape=name,
+                      fill=name),
+                  size=2) +
+  scale_shape_manual(values=c(22:23)) +
+  labs(x="Longitude",
+       y="Latitude",
+       fill="Species",
+       shape="Species")
+
+```
+# Part 3 question
+setting the seed to my S0 number
+```{r}
+set.seed(1960106)
+
+bigfoot <- bigfoot_raw %>% 
+  filter(long >= min_long & long <= max_long,
+         lat >= min_lat & lat <= max_lat) %>% 
+  sample_n(300) %>% 
+  mutate(name="Gigantopithecus") %>% 
+  dplyr::select(name,long,lat)
+
+base + geom_point(data=both_species,
+                  aes(x=long,
+                      y=lat,
+                      shape=name,
+                      fill=name),
+                  size=2) +
+  scale_shape_manual(values=c(22:23)) +
+  labs(x="Longitude",
+       y="Latitude",
+       fill="Species",
+       shape="Species")
+```
+
+#### Part: 4 Bathymetry
+
+libraries for this section
+```{r}
+library(tidyverse)
+library(marmap)
+```
+
+
+# Example
+
+setting the plot parameters (lat,lon) and specifying depth and adding it in with mutate()
+```{r}
+
+min_long <- -170
+max_long <- 164
+min_lat <- -42
+max_lat <- -8
+
+# This converts depth in km to depth in feet.
+# Necessary because bathymetry data will be in feet
+earthquakes <- quakes %>% 
+   mutate(depth=depth * 3280.84)
+```
+
+gathering bathymetric data from the NOAA site. antimeridian set to TRUE because the location is on the 180 meridian.
+keep = TRUE saves the data to a local csv file.
+```{r}
+fiji <- getNOAA.bathy(lon1=min_long,
+                      lon2=max_long,
+                      lat1=min_lat,
+                      lat2=max_lat,
+                      antimeridian=TRUE,
+                      keep=TRUE)
+
+# got the same error code as posted in the online discussion 
+```
+
+
+```{r}
+autoplot.bathy(fiji, 
+         geom = c("raster", "contour"),
+         size = 0.1,
+         na.rm = TRUE)
+```
+
+
