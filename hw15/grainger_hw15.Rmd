@@ -1,0 +1,27 @@
+---
+title: "HW_15"
+author: "Cody Grainger"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+Libraries
+```{r}
+library(tidyverse)
+library(here)
+library(lubridate)
+library(sf)
+library(patchwork)
+library(gghighlight)
+library(ggthemes)
+```
+
+Data
+```{r}
+total_cases <- read_csv(here("data","covid_confirmed_usafacts.csv"))
+
+as_tibble(total_cases)
+```
+

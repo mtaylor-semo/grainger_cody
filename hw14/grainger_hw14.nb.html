@@ -2252,10 +2252,11 @@ cols(
 <p>Importing data</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuKGx5bWVfcmF3IDwtIHJlYWRfY3N2KGZpbGU9aGVyZTo6aGVyZShcImRhdGFcIixcImx5bWVfZGlzZWFzZS5jc3ZcIiksXG4gICAgICAgICBjb21tZW50ID0gXCJMeW1lIERpc2Vhc2UgbnVtYmVyIGNhc2VzXCIsXG4gICAgICAgICBuYT1cIi1cIikpXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuKGx5bWVfcmF3IDwtIHJlYWRfY3N2KGZpbGU9aGVyZTo6aGVyZShcImRhdGFcIixcImx5bWVfZGlzZWFzZS5jc3ZcIiksXG4gICAgICAgICBjb21tZW50ID0gXCJMeW1lIERpc2Vhc2UgbnVtYmVyIGNhc2VzXCIsXG4gICAgICAgICBuYT1cIi1cIixcbiAgICAgICAgICkpXG5gYGAifQ== -->
 <pre class="r"><code>(lyme_raw &lt;- read_csv(file=here::here(&quot;data&quot;,&quot;lyme_disease.csv&quot;),
          comment = &quot;Lyme Disease number cases&quot;,
-         na=&quot;-&quot;))</code></pre>
+         na=&quot;-&quot;,
+         ))</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiUGFyc2VkIHdpdGggY29sdW1uIHNwZWNpZmljYXRpb246XG5jb2xzKFxuICBTdGF0ZSA9IFx1MDAxYlszMW1jb2xfY2hhcmFjdGVyKClcdTAwMWJbMzltLFxuICBgMjAwN2AgPSBcdTAwMWJbMzJtY29sX2RvdWJsZSgpXHUwMDFiWzM5bSxcbiAgYDIwMDhgID0gXHUwMDFiWzMybWNvbF9kb3VibGUoKVx1MDAxYlszOW0sXG4gIGAyMDA5YCA9IFx1MDAxYlszMm1jb2xfZG91YmxlKClcdTAwMWJbMzltLFxuICBgMjAxMGAgPSBcdTAwMWJbMzJtY29sX2RvdWJsZSgpXHUwMDFiWzM5bSxcbiAgYDIwMTFgID0gXHUwMDFiWzMybWNvbF9kb3VibGUoKVx1MDAxYlszOW0sXG4gIGAyMDEyYCA9IFx1MDAxYlszMm1jb2xfZG91YmxlKClcdTAwMWJbMzltLFxuICBgMjAxM2AgPSBcdTAwMWJbMzJtY29sX2RvdWJsZSgpXHUwMDFiWzM5bSxcbiAgYDIwMTRgID0gXHUwMDFiWzMybWNvbF9kb3VibGUoKVx1MDAxYlszOW0sXG4gIGAyMDE1YCA9IFx1MDAxYlszMm1jb2xfZG91YmxlKClcdTAwMWJbMzltLFxuICBgMjAxNmAgPSBcdTAwMWJbMzJtY29sX2RvdWJsZSgpXHUwMDFiWzM5bSxcbiAgYDIwMTdfQ29uZmlybWVkYCA9IFx1MDAxYlszMm1jb2xfZG91YmxlKClcdTAwMWJbMzltLFxuICBgMjAxN19Qcm9iYWJsZWAgPSBcdTAwMWJbMzJtY29sX2RvdWJsZSgpXHUwMDFiWzM5bVxuKVxuIn0= -->
 <pre><code>Parsed with column specification:
@@ -2282,14 +2283,14 @@ cols(
   </script>
 </div>
 <!-- rnb-frame-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubHltZSA8LSBseW1lX3JhdyAlPiVcbiAgbXV0YXRlKDIwMTcgPSAyMDE3X0NvbmZpcm1lZCArIDIwMTdfUHJvYmFibGUpXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubHltZSA8LSBseW1lX3JhdyAlPiVcbiAgcmVuYW1lKGNvbmY9MjAxN19Db25maXJtZWQscHJvYj0yMDE3X1Byb2JhYmxlKSAlPiVcbmBgYCJ9 -->
 <pre class="r"><code>lyme &lt;- lyme_raw %&gt;%
-  mutate(2017 = 2017_Confirmed + 2017_Probable)</code></pre>
+  rename(conf=2017_Confirmed,prob=2017_Probable) %&gt;%</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3I6IHVuZXhwZWN0ZWQgJz0nIGluOlxuXCJseW1lIDwtIGx5bWVfcmF3ICU+JVxuICBtdXRhdGUoMjAxNyA9XCJcbiJ9 -->
-<pre><code>Error: unexpected &#39;=&#39; in:
+<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3I6IHVuZXhwZWN0ZWQgaW5wdXQgaW46XG5cImx5bWUgPC0gbHltZV9yYXcgJT4lXG4gIHJlbmFtZShjb25mPTIwMTdfXCJcbiJ9 -->
+<pre><code>Error: unexpected input in:
 &quot;lyme &lt;- lyme_raw %&gt;%
-  mutate(2017 =&quot;</code></pre>
+  rename(conf=2017_&quot;</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
